@@ -1,5 +1,6 @@
 import { Room, UserProfile, Message, Recording } from './types';
 import roomHeroImage from './assets/images/starmaker_rush_hero_1783497446803.jpg';
+import popClassicsCardImage from './assets/images/pop_classics_card_transparent.png';
 
 export const initialUserProfile: UserProfile = {
   name: "StarMaker",
@@ -90,6 +91,7 @@ export const sampleRooms: Room[] = [
     glowColor: "rgba(168, 85, 247, 0.5)",
     iconType: "microphone",
     imageSrc: roomHeroImage,
+    cardImageSrc: popClassicsCardImage,
     players: [
       { name: "Sarah", avatarUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100" },
       { name: "John", avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" },

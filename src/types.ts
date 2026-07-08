@@ -62,6 +62,7 @@ export interface Room {
   gradientClass: string;
   glowColor: string;
   imageSrc: string;
+  cardImageSrc?: string;
   songs: Song[];
 }
 

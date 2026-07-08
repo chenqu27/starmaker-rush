@@ -151,6 +151,7 @@ export default function Carousel({ rooms, activeIndex, setActiveIndex }: Carouse
           const slot = diff + visualOffset;
           const pose = getCircularPose(slot);
           const isFocused = pose.frontness > 0.98;
+          const hasCustomCardImage = Boolean(room.cardImageSrc);
 
           return (
             <motion.div
@@ -182,6 +183,15 @@ export default function Carousel({ rooms, activeIndex, setActiveIndex }: Carouse
                   : 'border-white/8'
               }`}
             >
+              {hasCustomCardImage ? (
+                <img
+                  src={room.cardImageSrc}
+                  alt={room.title}
+                  className="absolute inset-0 h-full w-full object-fill pointer-events-none"
+                  draggable={false}
+                />
+              ) : (
+                <>
               {/* Card Background Gradient */}
               <div className={`absolute inset-0 bg-gradient-to-b ${room.gradientClass} mix-blend-screen opacity-45 pointer-events-none`} />
 
@@ -265,6 +275,8 @@ export default function Carousel({ rooms, activeIndex, setActiveIndex }: Carouse
                   </div>
                 </div>
               </div>
+                </>
+              )}
             </motion.div>
           );
         })}
