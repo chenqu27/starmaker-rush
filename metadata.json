@@ -1,0 +1,6 @@
+{
+  "name": "StarMaker Rush",
+  "description": "A high-fidelity splash and login screen for StarMaker Rush, a fast-paced social music app.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
