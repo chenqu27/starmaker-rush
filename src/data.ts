@@ -1,6 +1,8 @@
 import { Room, UserProfile, Message, Recording } from './types';
 import roomHeroImage from './assets/images/starmaker_rush_hero_1783497446803.jpg';
+import tiktokHitsCardImage from './assets/images/tiktok_hits_card.png';
 import popClassicsCardImage from './assets/images/pop_classics_card_transparent.png';
+import newReleasesCardImage from './assets/images/new_releases_card.png';
 
 export const initialUserProfile: UserProfile = {
   name: "StarMaker",
@@ -24,6 +26,7 @@ export const sampleRooms: Room[] = [
     glowColor: "rgba(244, 63, 94, 0.5)",
     iconType: "tiktok",
     imageSrc: roomHeroImage,
+    cardImageSrc: tiktokHitsCardImage,
     players: [
       { name: "Yuki", avatarUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100" },
       { name: "Leo", avatarUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=100" },
@@ -158,6 +161,7 @@ export const sampleRooms: Room[] = [
     glowColor: "rgba(59, 130, 246, 0.5)",
     iconType: "headphones",
     imageSrc: roomHeroImage,
+    cardImageSrc: newReleasesCardImage,
     players: [
       { name: "Chloe", avatarUrl: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=100" },
       { name: "Lucas", avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100" },

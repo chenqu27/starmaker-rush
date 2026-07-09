@@ -130,7 +130,7 @@ export default function Carousel({ rooms, activeIndex, setActiveIndex }: Carouse
   };
 
   return (
-    <div id="swipeable-carousel-container" className="relative flex flex-col items-center justify-center py-1 w-full max-w-md mx-auto select-none overflow-hidden">
+    <div id="swipeable-carousel-container" className="relative flex translate-y-8 flex-col items-center justify-center py-1 w-full max-w-md mx-auto select-none overflow-hidden">
       {/* Circular Track Stage */}
       <motion.div
         className="relative flex items-center justify-center w-full h-[404px]"
