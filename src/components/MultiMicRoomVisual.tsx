@@ -48,43 +48,43 @@ const initialSeats: Seat[] = [
   {
     id: 2,
     name: 'Nana',
-    avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=88&w=180',
+    avatar: avatar23,
     state: 'idle'
   },
   {
     id: 3,
     name: 'Leo',
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=88&w=180',
+    avatar: avatar11,
     state: 'muted'
   },
   { id: 4, name: '', state: 'empty' },
   {
     id: 5,
     name: 'Echo',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=88&w=180',
+    avatar: avatar09,
     state: 'talking'
   },
   { id: 6, name: '', state: 'empty' },
   {
     id: 7,
     name: 'Mika',
-    avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=88&w=180',
+    avatar: avatar27,
     state: 'idle'
   },
   {
     id: 8,
     name: 'Ava',
-    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=88&w=180',
+    avatar: avatar17,
     state: 'idle'
   },
   { id: 9, name: '', state: 'empty' }
 ];
 
-const selfAvatar = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=88&w=180';
+const selfAvatar = avatar29;
 
 const fallbackSinger = {
   name: 'Yuki',
-  avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=90&w=240'
+  avatarUrl: avatar35
 };
 
 const fallbackSong = {
@@ -479,3 +479,11 @@ function UserSheet({ seat, followed, onFollow, onGift }: { seat: Seat; followed:
     </div>
   );
 }
+
+import avatar09 from '../assets/avatars/avatar_09.jpg';
+import avatar11 from '../assets/avatars/avatar_11.jpg';
+import avatar17 from '../assets/avatars/avatar_17.jpg';
+import avatar23 from '../assets/avatars/avatar_23.jpg';
+import avatar27 from '../assets/avatars/avatar_27.jpg';
+import avatar29 from '../assets/avatars/avatar_29.jpg';
+import avatar35 from '../assets/avatars/avatar_35.jpg';

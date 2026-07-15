@@ -16,6 +16,12 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { MatchState, MatchedPlayer, NetworkState, Soundtrack } from '../types';
+import avatar04 from '../assets/avatars/avatar_04.jpg';
+import avatar12 from '../assets/avatars/avatar_12.jpg';
+import avatar18 from '../assets/avatars/avatar_18.jpg';
+import avatar30 from '../assets/avatars/avatar_30.jpg';
+import avatar31 from '../assets/avatars/avatar_31.jpg';
+import avatar32 from '../assets/avatars/avatar_32.jpg';
 
 interface MatchingViewProps {
   onBackToLogin: () => void;
@@ -27,10 +33,10 @@ interface MatchingViewProps {
 }
 
 const MOCK_OPPONENTS: MatchedPlayer[] = [
-  { id: 'p1', name: 'Luna 🌙', avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80', level: 12, country: '🇨🇦 Canada', micStatus: 'connecting' },
-  { id: 'p2', name: 'RhythmKing 👑', avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80', level: 24, country: '🇧🇷 Brazil', micStatus: 'muted' },
-  { id: 'p3', name: 'Yuki ✨', avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80', level: 18, country: '🇯🇵 Japan', micStatus: 'ready' },
-  { id: 'p4', name: 'Sarah 💖', avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80', level: 9, country: '🇺🇸 USA', micStatus: 'ready' }
+  { id: 'p1', name: 'Luna 🌙', avatarUrl: avatar18, level: 12, country: '🇨🇦 Canada', micStatus: 'connecting' },
+  { id: 'p2', name: 'RhythmKing 👑', avatarUrl: avatar12, level: 24, country: '🇧🇷 Brazil', micStatus: 'muted' },
+  { id: 'p3', name: 'Yuki ✨', avatarUrl: avatar30, level: 18, country: '🇯🇵 Japan', micStatus: 'ready' },
+  { id: 'p4', name: 'Sarah 💖', avatarUrl: avatar04, level: 9, country: '🇺🇸 USA', micStatus: 'ready' }
 ];
 
 const SONG_LIST = [
@@ -42,7 +48,7 @@ const SONG_LIST = [
 const makeCurrentPlayer = (loginMethod: string): MatchedPlayer => ({
   id: 'me',
   name: loginMethod === 'Guest' ? 'Guest-3904' : `Starmaker_${loginMethod}`,
-  avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+  avatarUrl: avatar32,
   level: 1,
   country: 'Global',
   micStatus: 'ready',
@@ -278,7 +284,7 @@ export const MatchingView: React.FC<MatchingViewProps> = ({
               {/* Central User Glow bubble */}
               <div className="relative w-16 h-16 rounded-full avatar-bubble-immersive z-20 overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" 
+                  src={avatar31}
                   alt="My Avatar" 
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover"

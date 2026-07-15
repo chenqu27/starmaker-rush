@@ -26,6 +26,9 @@ import {
   X
 } from 'lucide-react';
 import { Player, Room, Song, UserProfile } from '../types';
+import avatar07 from '../assets/avatars/avatar_07.jpg';
+import avatar22 from '../assets/avatars/avatar_22.jpg';
+import avatar26 from '../assets/avatars/avatar_26.jpg';
 
 interface MultiMicRoomProps {
   key?: string;
@@ -70,21 +73,21 @@ const fallbackSong: Song = {
 const visitorPool: RoomPlayer[] = [
   {
     name: 'Nana',
-    avatarUrl: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=120',
+    avatarUrl: avatar22,
     role: '普通',
     level: 18,
     followers: 4200
   },
   {
     name: 'Echo',
-    avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120',
+    avatarUrl: avatar07,
     role: '普通',
     level: 16,
     followers: 3100
   },
   {
     name: 'Mika',
-    avatarUrl: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=120',
+    avatarUrl: avatar26,
     role: '普通',
     level: 21,
     followers: 6800

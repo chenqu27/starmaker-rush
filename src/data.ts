@@ -3,6 +3,17 @@ import roomHeroImage from './assets/images/starmaker_rush_hero_1783497446803.jpg
 import tiktokHitsCardImage from './assets/images/tiktok_hits_card.png';
 import popClassicsCardImage from './assets/images/pop_classics_card_transparent.png';
 import newReleasesCardImage from './assets/images/new_releases_card.png';
+import avatar01 from './assets/avatars/avatar_01.jpg';
+import avatar02 from './assets/avatars/avatar_02.jpg';
+import avatar06 from './assets/avatars/avatar_06.jpg';
+import avatar10 from './assets/avatars/avatar_10.jpg';
+import avatar13 from './assets/avatars/avatar_13.jpg';
+import avatar15 from './assets/avatars/avatar_15.jpg';
+import avatar21 from './assets/avatars/avatar_21.jpg';
+import avatar25 from './assets/avatars/avatar_25.jpg';
+import avatar28 from './assets/avatars/avatar_28.jpg';
+import avatar34 from './assets/avatars/avatar_34.jpg';
+import avatar37 from './assets/avatars/avatar_37.jpg';
 
 export const initialUserProfile: UserProfile = {
   name: "StarMaker",
@@ -11,7 +22,7 @@ export const initialUserProfile: UserProfile = {
   coins: 12450,
   diamonds: 2860,
   vip: true,
-  avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200"
+  avatarUrl: avatar28
 };
 
 export const sampleRooms: Room[] = [
@@ -28,9 +39,9 @@ export const sampleRooms: Room[] = [
     imageSrc: roomHeroImage,
     cardImageSrc: tiktokHitsCardImage,
     players: [
-      { name: "Yuki", avatarUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100" },
-      { name: "Leo", avatarUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=100" },
-      { name: "Elena", avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100" }
+      { name: "Yuki", avatarUrl: avatar34 },
+      { name: "Leo", avatarUrl: avatar10 },
+      { name: "Elena", avatarUrl: avatar02 }
     ],
     songs: [
       {
@@ -96,9 +107,9 @@ export const sampleRooms: Room[] = [
     imageSrc: roomHeroImage,
     cardImageSrc: popClassicsCardImage,
     players: [
-      { name: "Sarah", avatarUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100" },
-      { name: "John", avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" },
-      { name: "Mia", avatarUrl: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=100" }
+      { name: "Sarah", avatarUrl: avatar15 },
+      { name: "John", avatarUrl: avatar13 },
+      { name: "Mia", avatarUrl: avatar21 }
     ],
     songs: [
       {
@@ -163,9 +174,9 @@ export const sampleRooms: Room[] = [
     imageSrc: roomHeroImage,
     cardImageSrc: newReleasesCardImage,
     players: [
-      { name: "Chloe", avatarUrl: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=100" },
-      { name: "Lucas", avatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100" },
-      { name: "Aria", avatarUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100" }
+      { name: "Chloe", avatarUrl: avatar25 },
+      { name: "Lucas", avatarUrl: avatar06 },
+      { name: "Aria", avatarUrl: avatar01 }
     ],
     songs: [
       {
@@ -208,7 +219,7 @@ export const sampleMessages: Message[] = [
   {
     id: "m1",
     sender: "Elena 🌸",
-    avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100",
+    avatarUrl: avatar02,
     content: "Hey StarMaker! We're queuing up 'Golden Hour' in TikTok Hits! Come grab the mic!",
     time: "2m ago",
     isOnline: true
@@ -216,7 +227,7 @@ export const sampleMessages: Message[] = [
   {
     id: "m2",
     sender: "Leo 🔥",
-    avatarUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=100",
+    avatarUrl: avatar10,
     content: "Dude, that Yesterday cover you sang yesterday was SSS tier! Mind-blowing!",
     time: "23m ago",
     isOnline: true
@@ -224,7 +235,7 @@ export const sampleMessages: Message[] = [
   {
     id: "m3",
     sender: "Mia 🎵",
-    avatarUrl: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=100",
+    avatarUrl: avatar21,
     content: "Are we joining the competition tonight? We need a top vocalist for our team.",
     time: "1h ago",
     isOnline: false
@@ -232,7 +243,7 @@ export const sampleMessages: Message[] = [
   {
     id: "m4",
     sender: "StarMaker Official",
-    avatarUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=100",
+    avatarUrl: avatar37,
     content: "Congratulations! You have received a Level 28 Diamond Bonus Pack! Check your balance.",
     time: "4h ago",
     isOnline: true

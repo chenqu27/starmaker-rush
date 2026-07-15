@@ -18,6 +18,12 @@ import {
   X
 } from 'lucide-react';
 import { Room, RushDemoCommand, RushRoomPhase, Song, Player } from '../types';
+import avatar05 from '../assets/avatars/avatar_05.jpg';
+import avatar08 from '../assets/avatars/avatar_08.jpg';
+import avatar16 from '../assets/avatars/avatar_16.jpg';
+import avatar19 from '../assets/avatars/avatar_19.jpg';
+import avatar33 from '../assets/avatars/avatar_33.jpg';
+import avatar36 from '../assets/avatars/avatar_36.jpg';
 
 interface SongRoomProps {
   key?: string;
@@ -42,12 +48,12 @@ interface PlayerStat {
 }
 
 const fallbackPlayers: Player[] = [
-  { name: 'Luna', avatarUrl: 'https://images.unsplash.com/photo-1496440737103-cd596325d314?auto=format&fit=crop&q=80&w=200' },
-  { name: 'Jay', avatarUrl: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=200' },
-  { name: 'Alex', avatarUrl: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200' },
-  { name: 'Zoe', avatarUrl: 'https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?auto=format&fit=crop&q=80&w=200' },
-  { name: 'Mia', avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200' },
-  { name: 'Leo', avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200' }
+  { name: 'Luna', avatarUrl: avatar05 },
+  { name: 'Jay', avatarUrl: avatar33 },
+  { name: 'Alex', avatarUrl: avatar19 },
+  { name: 'Zoe', avatarUrl: avatar36 },
+  { name: 'Mia', avatarUrl: avatar16 },
+  { name: 'Leo', avatarUrl: avatar08 }
 ];
 
 const seatPositions = [

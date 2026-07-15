@@ -1,6 +1,10 @@
 import { FormEvent, useState } from 'react';
 import { ArrowRight, CalendarDays, UserRound } from 'lucide-react';
 import { UserProfile } from '../types';
+import avatar03 from '../assets/avatars/avatar_03.jpg';
+import avatar08 from '../assets/avatars/avatar_08.jpg';
+import avatar14 from '../assets/avatars/avatar_14.jpg';
+import avatar28 from '../assets/avatars/avatar_28.jpg';
 
 export interface BasicProfileInfo {
   name: string;
@@ -15,10 +19,10 @@ interface ProfileSetupViewProps {
 }
 
 const avatarOptions = [
-  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200',
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=200',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200'
+  avatar28,
+  avatar08,
+  avatar03,
+  avatar14
 ];
 
 export default function ProfileSetupView({ onComplete }: ProfileSetupViewProps) {

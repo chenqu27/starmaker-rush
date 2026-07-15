@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, Crown, Disc3, Gem, Heart, Music, Music2, Plus, Star, Trophy } from 'lucide-react';
 import { sampleRecordings, sampleRooms } from '../data';
 import { UserProfile } from '../types';
+import avatar20 from '../assets/avatars/avatar_20.jpg';
+import avatar24 from '../assets/avatars/avatar_24.jpg';
 
 interface MeTabProps {
   user: UserProfile;
@@ -11,8 +13,8 @@ interface MeTabProps {
 type ProfileTab = 'records' | 'identity';
 
 const extraGamePlayers = [
-  { name: 'Nova', avatarUrl: 'https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?auto=format&fit=crop&q=80&w=100' },
-  { name: 'Kai', avatarUrl: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&q=80&w=100' }
+  { name: 'Nova', avatarUrl: avatar20 },
+  { name: 'Kai', avatarUrl: avatar24 }
 ];
 
 export default function MeTab({ user, onOpenShop }: MeTabProps) {
