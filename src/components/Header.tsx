@@ -12,8 +12,9 @@ export default function Header({ user, onOpenProfile, onOpenShop }: HeaderProps)
   return (
     <motion.header 
       id="starmaker-header"
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.14, ease: 'easeOut' }}
       className="flex items-center justify-between px-4 pt-11 pb-3 bg-gradient-to-b from-[#08081a] to-transparent relative z-40 select-none"
     >
       {/* Profile Section */}

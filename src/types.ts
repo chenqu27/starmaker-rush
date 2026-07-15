@@ -2,6 +2,17 @@ export type AppState = 'SPLASH' | 'MATCHING';
 
 export type MatchState = 'SEARCHING' | 'FOUND' | 'INTRO_VS' | 'READY';
 
+export type RushDemoShortcut =
+  | 'other-grabbed'
+  | 'round-ended';
+
+export type RushRoomPhase = 'ready' | 'live' | 'missed' | 'singing' | 'result' | 'ended';
+
+export interface RushDemoCommand {
+  id: number;
+  shortcut: RushDemoShortcut;
+}
+
 export type NetworkState = 'OPTIMAL' | 'LAGGY' | 'INTERMITTENT';
 
 export type SoundtrackType = 'POP_RUSH' | 'GLOW_SYNTH' | 'HIP_HOP_VIBE' | 'OFF';
@@ -56,6 +67,10 @@ export interface Room {
   title: string;
   subtitle: string;
   description: string;
+  announcement?: string;
+  micCount?: 4 | 6 | 8;
+  currentSong?: string;
+  coverTheme?: string;
   onlineCount: number;
   players: Player[];
   iconType: RoomIconType;

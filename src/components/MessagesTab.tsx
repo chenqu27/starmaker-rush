@@ -82,7 +82,7 @@ export default function MessagesTab() {
             className="flex-1 flex flex-col h-full"
           >
             {/* Header */}
-            <div className="p-4 border-b border-white/5 bg-[#08081f]">
+            <div className="px-4 pb-4 pt-12 border-b border-white/5 bg-[#08081f]">
               <h1 className="text-xl font-display font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-400">
                 Inbox
               </h1>
@@ -137,7 +137,7 @@ export default function MessagesTab() {
             className="absolute inset-0 bg-[#050512] z-40 flex flex-col justify-between"
           >
             {/* Chat Box Header */}
-            <div className="flex items-center justify-between p-4 bg-[#08081f] border-b border-white/5">
+            <div className="flex items-center justify-between px-4 pb-4 pt-12 bg-[#08081f] border-b border-white/5">
               <div className="flex items-center gap-3">
                 <button 
                   onClick={() => setActiveChat(null)}

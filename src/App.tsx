@@ -1,11 +1,34 @@
 import { useState } from 'react';
 import { Radio } from 'lucide-react';
+import { RushDemoCommand, RushDemoShortcut, RushRoomPhase } from './types';
 import { PhoneMockup } from './components/PhoneMockup';
 import { SplashView } from './components/SplashView';
 import { HomeView } from './components/HomeView';
+import RushDemoConsole from './components/RushDemoConsole';
+import ProfileSetupView, { BasicProfileInfo } from './components/ProfileSetupView';
+import { initialUserProfile } from './data';
+
+type EntryStep = 'login' | 'profile' | 'home';
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [entryStep, setEntryStep] = useState<EntryStep>('login');
+  const [basicProfile, setBasicProfile] = useState<BasicProfileInfo | null>(null);
+  const [rushDemoCommand, setRushDemoCommand] = useState<RushDemoCommand | null>(null);
+  const [activeDemoShortcut, setActiveDemoShortcut] = useState<RushDemoShortcut | null>(null);
+  const [rushRoomPhase, setRushRoomPhase] = useState<RushRoomPhase | null>(null);
+
+  const handleRushDemoJump = (shortcut: RushDemoShortcut) => {
+    setActiveDemoShortcut(shortcut);
+    setRushDemoCommand({
+      id: Date.now(),
+      shortcut
+    });
+  };
+
+  const handleProfileComplete = (profile: BasicProfileInfo) => {
+    setBasicProfile(profile);
+    setEntryStep('home');
+  };
 
   return (
     <div
@@ -43,16 +66,32 @@ export default function App() {
 
       <main
         id="app-workspace"
-        className="flex-1 min-h-0 w-full max-w-5xl mx-auto flex items-center justify-center relative z-10 px-4 md:px-6 py-6"
+        className="flex-1 min-h-0 w-full max-w-6xl mx-auto flex items-center justify-center relative z-10 px-4 md:px-6 py-6"
       >
+        <div className="relative flex items-center justify-center">
         <div className="rounded-[54px] shadow-[0_0_90px_rgba(236,72,153,0.45)]">
           <PhoneMockup>
-            {isLoggedIn ? (
-              <HomeView />
-            ) : (
-              <SplashView onLogin={() => setIsLoggedIn(true)} />
+            {entryStep === 'login' && <SplashView onLogin={() => setEntryStep('profile')} />}
+            {entryStep === 'profile' && (
+              <ProfileSetupView initialProfile={initialUserProfile} onComplete={handleProfileComplete} />
+            )}
+            {entryStep === 'home' && (
+              <HomeView
+                initialProfile={basicProfile ? { ...initialUserProfile, ...basicProfile } : initialUserProfile}
+                rushDemoCommand={rushDemoCommand}
+                onRushPhaseChange={setRushRoomPhase}
+              />
             )}
           </PhoneMockup>
+        </div>
+        <div className="absolute left-full top-1/2 ml-2 -translate-y-1/2">
+          <RushDemoConsole
+            disabled={entryStep !== 'home'}
+            roomPhase={rushRoomPhase}
+            activeShortcut={activeDemoShortcut}
+            onJump={handleRushDemoJump}
+          />
+        </div>
         </div>
       </main>
 
@@ -64,7 +103,7 @@ export default function App() {
           STARMAKER RUSH MOBILE UI PROTOTYPE
         </p>
         <p className="font-sans">
-          Gameplay, matching, scoring, and sandbox controls removed.
+          External demo console is for product review only.
         </p>
       </footer>
     </div>

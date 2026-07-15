@@ -1,4 +1,4 @@
-import { ArrowRight, Mail, Phone, UserRound } from 'lucide-react';
+import { ArrowRight, Mail, UserRound } from 'lucide-react';
 import rushLogo from '../assets/images/starmaker_rush_logo.png';
 
 interface SplashViewProps {
@@ -25,12 +25,6 @@ const FacebookIcon = () => (
 );
 
 const loginOptions = [
-  {
-    id: 'btn-login-phone',
-    label: 'Continue with Phone',
-    icon: <Phone size={20} className="text-white" />,
-    iconClassName: 'bg-gradient-to-br from-violet-500 to-fuchsia-500'
-  },
   {
     id: 'btn-login-google',
     label: 'Continue with Google',
@@ -76,7 +70,7 @@ export const SplashView = ({ onLogin }: SplashViewProps) => {
           <img src={rushLogo} alt="StarMaker Rush" className="rush-logo-image" />
         </div>
 
-        <div id="login-actions-panel" className="w-full flex flex-col gap-2">
+        <div id="login-actions-panel" className="mt-10 w-full flex flex-col gap-2">
           <p className="rush-tagline">Sing fast. Vibe together.</p>
 
           <div id="login-buttons-stack" className="flex flex-col gap-2">

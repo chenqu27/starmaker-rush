@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { HelpCircle, Satellite, Sparkles, X, Zap } from 'lucide-react';
-import { Room, Song, UserProfile, Player } from '../types';
+import { Room, RushDemoCommand, RushRoomPhase, Song, UserProfile, Player } from '../types';
 import SongRoom from './SongRoom';
 
 interface QuickStartModalProps {
   room: Room;
   user: UserProfile;
+  demoCommand?: RushDemoCommand | null;
+  onPhaseChange?: (phase: RushRoomPhase | null) => void;
   onClose: () => void;
 }
 
-export default function QuickStartModal({ room, user, onClose }: QuickStartModalProps) {
-  const [matchState, setMatchState] = useState<'matching' | 'active'>('matching');
+export default function QuickStartModal({ room, user, demoCommand, onPhaseChange, onClose }: QuickStartModalProps) {
+  const [matchState, setMatchState] = useState<'matching' | 'identity' | 'active'>('matching');
   const [matchedPlayers, setMatchedPlayers] = useState<Array<Player | null>>([
     { name: user.name, avatarUrl: user.avatarUrl }, // Spot 1 is always the user
     null, // Spot 2
@@ -42,30 +44,47 @@ export default function QuickStartModal({ room, user, onClose }: QuickStartModal
     const timer1 = setTimeout(() => {
       // Player 2 connects
       setMatchedPlayers(prev => [prev[0], room.players[0], null, null]);
-    }, 800);
+    }, 450);
 
     const timer2 = setTimeout(() => {
       // Player 3 connects
       setMatchedPlayers(prev => [prev[0], prev[1], room.players[1], null]);
-    }, 1600);
+    }, 900);
 
     const timer3 = setTimeout(() => {
       // Player 4 connects
       setMatchedPlayers(prev => [prev[0], prev[1], prev[2], room.players[2]]);
-    }, 2400);
+    }, 1350);
 
     const timer4 = setTimeout(() => {
-      // Enter the room immediately after a full match.
+      // Show round identity before entering the room.
+      setMatchState('identity');
+    }, 1650);
+
+    const timer5 = setTimeout(() => {
       setMatchState('active');
-    }, 3200);
+    }, 3150);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
       clearTimeout(timer3);
       clearTimeout(timer4);
+      clearTimeout(timer5);
     };
   }, [room]);
+
+  useEffect(() => {
+    if (!demoCommand) return;
+
+    setMatchedPlayers([
+      { name: user.name, avatarUrl: user.avatarUrl },
+      room.players[0],
+      room.players[1],
+      room.players[2]
+    ]);
+    setMatchState('active');
+  }, [demoCommand, room.players, user.avatarUrl, user.name]);
 
   return (
     <div id="matchmaker-overlay" className="absolute inset-0 z-50 overflow-hidden bg-[#02020c] text-white select-none">
@@ -191,6 +210,47 @@ export default function QuickStartModal({ room, user, onClose }: QuickStartModal
               ))}
             </div>
 
+            {matchState === 'identity' && (
+              <motion.div
+                key="round-identity"
+                initial={{ opacity: 0, y: 18, scale: 0.94 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -12, scale: 0.98 }}
+                className="absolute inset-x-0 top-[12%] z-30 flex flex-col items-center px-8 text-center"
+              >
+                <p className="rounded-full border border-fuchsia-300/18 bg-black/24 px-4 py-2 text-[0.72rem] font-black tracking-wide text-fuchsia-100 shadow-[0_0_22px_rgba(236,72,153,0.2)] backdrop-blur-md">
+                  陈工匹配到本轮身份
+                </p>
+
+                <motion.div
+                  initial={{ y: 8 }}
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.1, ease: 'easeInOut' }}
+                  className="relative mt-5 h-[24rem] w-[15.5rem]"
+                >
+                  <div className="absolute left-1/2 top-0 h-[7.3rem] w-[7.3rem] -translate-x-1/2 rounded-full border-[3px] border-white/16 bg-gradient-to-br from-amber-100 via-pink-100 to-fuchsia-200 shadow-[0_0_30px_rgba(251,191,36,0.28)]">
+                    <div className="absolute left-7 top-11 h-3 w-3 rounded-full bg-[#1a1230]" />
+                    <div className="absolute right-7 top-11 h-3 w-3 rounded-full bg-[#1a1230]" />
+                    <div className="absolute left-1/2 top-[4.7rem] h-2 w-8 -translate-x-1/2 rounded-full bg-pink-500/70" />
+                  </div>
+                  <div className="absolute left-1/2 top-[6.6rem] h-[8.8rem] w-[8rem] -translate-x-1/2 rounded-[2.7rem] bg-gradient-to-br from-fuchsia-400 via-purple-500 to-cyan-400 shadow-[0_0_38px_rgba(236,72,153,0.42)]" />
+                  <div className="absolute left-[1.1rem] top-[7.7rem] h-4 w-[4.7rem] origin-right -rotate-[24deg] rounded-full bg-gradient-to-r from-pink-200 to-fuchsia-400 shadow-[0_0_16px_rgba(236,72,153,0.3)]" />
+                  <div className="absolute right-[1.1rem] top-[7.7rem] h-4 w-[4.7rem] origin-left rotate-[24deg] rounded-full bg-gradient-to-r from-cyan-300 to-blue-400 shadow-[0_0_16px_rgba(34,211,238,0.3)]" />
+                  <div className="absolute left-[4.5rem] top-[14.5rem] h-[6.5rem] w-5 origin-top rotate-[9deg] rounded-full bg-gradient-to-b from-fuchsia-300 to-purple-700" />
+                  <div className="absolute right-[4.5rem] top-[14.5rem] h-[6.5rem] w-5 origin-top -rotate-[9deg] rounded-full bg-gradient-to-b from-cyan-300 to-blue-700" />
+                  <div className="absolute left-[3.8rem] bottom-4 h-4 w-12 rounded-full bg-fuchsia-300/90" />
+                  <div className="absolute right-[3.8rem] bottom-4 h-4 w-12 rounded-full bg-cyan-300/90" />
+                  <div className="absolute left-1/2 top-[9.1rem] h-[3.6rem] w-[3.6rem] -translate-x-1/2 rounded-full bg-[#12072a] shadow-[0_0_22px_rgba(34,211,238,0.32)]">
+                    <div className="absolute left-1/2 top-2 h-8 w-4 -translate-x-1/2 rounded-full bg-gradient-to-b from-cyan-200 to-fuchsia-400" />
+                    <div className="absolute bottom-2 left-1/2 h-2 w-9 -translate-x-1/2 rounded-full bg-white/70" />
+                  </div>
+                  <Sparkles className="absolute right-5 top-6 h-7 w-7 fill-fuchsia-200 text-fuchsia-200 drop-shadow" />
+                  <Sparkles className="absolute bottom-16 left-4 h-6 w-6 fill-cyan-200 text-cyan-200 drop-shadow" />
+                </motion.div>
+              </motion.div>
+            )}
+
+            {matchState === 'matching' && (
             <div className="absolute inset-x-0 bottom-[13%] z-10 px-8 text-center">
               <motion.h2
                 animate={{ opacity: [0.78, 1, 0.78] }}
@@ -213,6 +273,7 @@ export default function QuickStartModal({ room, user, onClose }: QuickStartModal
                 ))}
               </div>
             </div>
+            )}
           </motion.div>
         ) : (
           <SongRoom 
@@ -220,6 +281,8 @@ export default function QuickStartModal({ room, user, onClose }: QuickStartModal
             room={room}
             song={selectedSong}
             currentUserAvatar={user.avatarUrl}
+            demoCommand={demoCommand}
+            onPhaseChange={onPhaseChange}
             onClose={onClose}
           />
         )}
