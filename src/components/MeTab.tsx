@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ChevronLeft, ChevronRight, Crown, Disc3, Heart, Music, Music2, Star, Trophy } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Crown, Disc3, Gem, Heart, Music, Music2, Plus, Star, Trophy } from 'lucide-react';
 import { sampleRecordings, sampleRooms } from '../data';
 import { UserProfile } from '../types';
 
@@ -15,7 +15,7 @@ const extraGamePlayers = [
   { name: 'Kai', avatarUrl: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&q=80&w=100' }
 ];
 
-export default function MeTab({ user, onOpenShop: _onOpenShop }: MeTabProps) {
+export default function MeTab({ user, onOpenShop }: MeTabProps) {
   const [activeTab, setActiveTab] = useState<ProfileTab>('records');
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
 
@@ -58,7 +58,24 @@ export default function MeTab({ user, onOpenShop: _onOpenShop }: MeTabProps) {
 
   return (
     <div id="me-tab-container" className="relative flex h-full flex-1 flex-col overflow-y-auto bg-[#050514] p-4 pb-24 text-white scrollbar-none select-none">
-      <section className="rounded-3xl border border-white/5 bg-gradient-to-b from-[#12122d]/50 to-transparent p-5 shadow">
+      <section className="relative rounded-3xl border border-white/5 bg-gradient-to-b from-[#12122d]/50 to-transparent p-5 shadow">
+        <button
+          type="button"
+          onClick={() => onOpenShop('diamonds')}
+          className="absolute right-4 top-4 z-10 flex items-center gap-1 rounded-full border border-purple-500/30 bg-[#12122d]/80 py-1 pl-1.5 pr-1 transition-colors hover:border-purple-500/60"
+          aria-label="Open recharge shop"
+        >
+          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-b from-purple-400 to-indigo-600 shadow-[0_0_5px_rgba(168,85,247,0.4)]">
+            <Gem className="h-3 w-3 text-purple-100" />
+          </div>
+          <span className="pr-1 font-mono text-xs font-bold text-purple-300">
+            {user.diamonds.toLocaleString()}
+          </span>
+          <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#1e1e4a] transition-colors hover:bg-purple-500/20">
+            <Plus className="h-2.5 w-2.5 text-purple-300" />
+          </div>
+        </button>
+
         <div className="flex items-center gap-4">
           <div className="h-20 w-20 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 p-[3px] shadow-[0_0_15px_rgba(168,85,247,0.4)]">
             <img
