@@ -1,0 +1,191 @@
+<h1>StarMaker Rush 产品需求文档</h1>
+
+<callout emoji="📌" background-color="light-blue" border-color="blue" text-color="blue">
+  <p>本需求文档按上方功能思维导图展开，面向产品评审、开发排期、测试验收使用。当前仅补充产品需求与交互规则，不展开技术支持清单。</p>
+</callout>
+
+<h2>1. 文档信息</h2>
+<table>
+  <colgroup><col span="1" width="120"/><col span="1" width="520"/></colgroup>
+  <tbody>
+    <tr><td background-color="light-gray">产品名称</td><td>StarMaker Rush</td></tr>
+    <tr><td background-color="light-gray">文档版本</td><td>V1.0</td></tr>
+    <tr><td background-color="light-gray">更新时间</td><td>2026-07-10</td></tr>
+    <tr><td background-color="light-gray">需求范围</td><td>账号入口、首页、房间、Quick Start 匹配、多人抢唱房、房间社交互动、消息、我的、资料与商城。</td></tr>
+    <tr><td background-color="light-gray">优先级定义</td><td>P0 为核心闭环必须交付；P1 为完整体验必需；P2 为增强体验或运营扩展。</td></tr>
+  </tbody>
+</table>
+
+<h2>2. 产品目标</h2>
+<table>
+  <colgroup><col span="1" width="160"/><col span="1" width="520"/></colgroup>
+  <thead>
+    <tr><th background-color="light-gray">目标</th><th background-color="light-gray">说明</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>快速进入</td><td>用户进入产品后，可以通过登录入口进入首页，并通过 Quick Start 快速进入多人抢唱玩法。</td></tr>
+    <tr><td>多人抢唱闭环</td><td>形成“匹配 - 进房 - 抢麦 - 演唱 - 评分 - 结算 - 返回房间”的核心闭环。</td></tr>
+    <tr><td>房间社交</td><td>支持房间内聊天、表情、礼物、关注等互动，增强实时陪伴和社交反馈。</td></tr>
+    <tr><td>个人沉淀</td><td>通过个人页、作品、徽章、资料、资产和商城形成用户成长与付费承接。</td></tr>
+  </tbody>
+</table>
+
+<h2>3. 功能需求表</h2>
+
+<h3>3.1 账号入口</h3>
+<table>
+  <colgroup><col span="1" width="92"/><col span="1" width="140"/><col span="1" width="270"/><col span="1" width="260"/><col span="1" width="70"/><col span="1" width="300"/></colgroup>
+  <thead>
+    <tr><th background-color="light-gray">编号</th><th background-color="light-gray">功能点</th><th background-color="light-gray">需求说明</th><th background-color="light-gray">交互/规则</th><th background-color="light-gray">优先级</th><th background-color="light-gray">验收标准</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ACC-01</td><td>品牌启动页</td><td>展示产品品牌、口号和登录入口，作为用户进入产品的第一屏。</td><td>启动页需突出 StarMaker Rush 品牌；登录入口集中展示。</td><td>P0</td><td>用户打开产品后可看到品牌信息和完整登录入口。</td></tr>
+    <tr><td>ACC-02</td><td>登录方式</td><td>支持手机号、Google、Apple、Facebook、邮箱和游客进入。</td><td>点击任一登录方式后进入对应授权或登录流程；游客进入直接进入首页。</td><td>P0</td><td>所有入口可点击；登录成功后进入首页。</td></tr>
+    <tr><td>ACC-03</td><td>协议确认</td><td>展示用户协议与隐私政策提示。</td><td>登录入口下方展示协议文案；协议名称需可识别。</td><td>P1</td><td>登录页可见协议提示，文案不遮挡登录按钮。</td></tr>
+    <tr><td>ACC-04</td><td>登录成功态</td><td>登录成功后初始化用户资料与资产信息。</td><td>进入首页后展示用户头像、昵称、等级、钻石等信息。</td><td>P0</td><td>成功登录后首页用户信息栏有完整数据。</td></tr>
+    <tr><td>ACC-05</td><td>游客进入</td><td>允许用户低门槛体验核心流程。</td><td>游客可进入首页和体验基础流程；涉及付费、资料沉淀时引导绑定账号。</td><td>P1</td><td>游客入口可进入首页；受限操作有明确引导。</td></tr>
+  </tbody>
+</table>
+
+<h3>3.2 首页 Home</h3>
+<table>
+  <colgroup><col span="1" width="92"/><col span="1" width="140"/><col span="1" width="270"/><col span="1" width="260"/><col span="1" width="70"/><col span="1" width="300"/></colgroup>
+  <thead>
+    <tr><th background-color="light-gray">编号</th><th background-color="light-gray">功能点</th><th background-color="light-gray">需求说明</th><th background-color="light-gray">交互/规则</th><th background-color="light-gray">优先级</th><th background-color="light-gray">验收标准</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>HOME-01</td><td>用户信息栏</td><td>展示头像、昵称、等级、等级进度和钻石余额入口。</td><td>点击头像进入资料；点击钻石或资产入口进入商城。</td><td>P0</td><td>首页顶部信息完整展示，入口可打开对应弹层。</td></tr>
+    <tr><td>HOME-02</td><td>房间推荐轮播</td><td>展示推荐房间，包括封面、标题、在线人数、玩家头像等信息。</td><td>支持横向或卡片切换；当前选中的房间用于 Quick Start 匹配。</td><td>P0</td><td>用户可切换推荐房间，并看到对应房间信息变化。</td></tr>
+    <tr><td>HOME-03</td><td>房间分类展示</td><td>首页展示 TikTok Hits、Pop Classics、New Releases 等推荐内容。</td><td>分类名称、描述、在线人数需清晰展示。</td><td>P1</td><td>至少展示 3 个推荐房间分类。</td></tr>
+    <tr><td>HOME-04</td><td>Quick Start</td><td>首页提供一键快速匹配入口。</td><td>点击按钮打开匹配弹层；匹配使用当前选中房间。</td><td>P0</td><td>点击 Quick Start 后进入匹配流程。</td></tr>
+    <tr><td>HOME-05</td><td>底部导航</td><td>支持 Home、房间、Messages、Me 四个主导航。</td><td>当前 Tab 高亮；切换时保留基础页面状态。</td><td>P0</td><td>四个 Tab 均可点击并切换到对应页面。</td></tr>
+  </tbody>
+</table>
+
+<h3>3.3 房间</h3>
+<table>
+  <colgroup><col span="1" width="92"/><col span="1" width="140"/><col span="1" width="270"/><col span="1" width="260"/><col span="1" width="70"/><col span="1" width="300"/></colgroup>
+  <thead>
+    <tr><th background-color="light-gray">编号</th><th background-color="light-gray">功能点</th><th background-color="light-gray">需求说明</th><th background-color="light-gray">交互/规则</th><th background-color="light-gray">优先级</th><th background-color="light-gray">验收标准</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ROOM-01</td><td>房间列表</td><td>展示当前可进入的 KTV 房间。</td><td>房间以双列卡片展示，包含名称、在线人数、玩家头像和状态。</td><td>P0</td><td>房间页能展示多个 KTV 房间卡片。</td></tr>
+    <tr><td>ROOM-02</td><td>房间状态</td><td>展示“抢唱中”“等待开唱”等房间状态。</td><td>状态需展示在房间卡片下方，帮助用户判断是否进入。</td><td>P1</td><td>每个房间卡片均有明确状态。</td></tr>
+    <tr><td>ROOM-03</td><td>创建房间入口</td><td>房间页提供创建 KTV 房间按钮。</td><td>点击后从底部弹出创建房间面板。</td><td>P0</td><td>点击创建房间后可打开创建弹层。</td></tr>
+    <tr><td>ROOM-04</td><td>房间名称输入</td><td>创建房间时支持输入房间名称。</td><td>默认名称为“我的 KTV”；名称最多 12 个字符；空值时使用默认名。</td><td>P0</td><td>输入、修改、清空房间名均能得到正确结果。</td></tr>
+    <tr><td>ROOM-05</td><td>创建并展示</td><td>创建成功后，新房间展示在房间列表顶部。</td><td>新房间在线人数初始为 1，展示当前用户或默认玩家头像。</td><td>P0</td><td>点击“创建并展示”后弹层关闭，新房间置顶。</td></tr>
+  </tbody>
+</table>
+
+<h3>3.4 Quick Start 匹配</h3>
+<table>
+  <colgroup><col span="1" width="92"/><col span="1" width="140"/><col span="1" width="270"/><col span="1" width="260"/><col span="1" width="70"/><col span="1" width="300"/></colgroup>
+  <thead>
+    <tr><th background-color="light-gray">编号</th><th background-color="light-gray">功能点</th><th background-color="light-gray">需求说明</th><th background-color="light-gray">交互/规则</th><th background-color="light-gray">优先级</th><th background-color="light-gray">验收标准</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>MAT-01</td><td>匹配弹层</td><td>点击 Quick Start 后进入全屏匹配状态。</td><td>展示匹配动画、当前房间名称和关闭按钮。</td><td>P0</td><td>用户点击 Quick Start 后进入匹配页面。</td></tr>
+    <tr><td>MAT-02</td><td>用户固定席位</td><td>匹配中当前用户固定展示在一个席位。</td><td>当前用户显示为 You，并展示头像。</td><td>P0</td><td>匹配页始终可识别当前用户。</td></tr>
+    <tr><td>MAT-03</td><td>对手加入</td><td>匹配过程中对手陆续加入。</td><td>空席位展示 Waiting；加入后展示头像和昵称。</td><td>P0</td><td>匹配过程中席位状态可从 Waiting 变为玩家信息。</td></tr>
+    <tr><td>MAT-04</td><td>取消匹配</td><td>用户可在匹配未完成时取消。</td><td>点击关闭按钮返回首页，不进入房间。</td><td>P0</td><td>取消后匹配弹层关闭，首页状态正常。</td></tr>
+    <tr><td>MAT-05</td><td>歌曲带入</td><td>匹配完成后从当前房间歌单中带入一首歌曲。</td><td>进入抢唱房后展示歌曲名、歌手和歌词。</td><td>P0</td><td>匹配完成进入房间后有明确歌曲信息。</td></tr>
+    <tr><td>MAT-06</td><td>进入房间</td><td>匹配满员后进入多人抢唱房。</td><td>匹配成功后自动切换到抢唱房状态。</td><td>P0</td><td>匹配完成后用户进入抢唱房，并可开始抢麦。</td></tr>
+  </tbody>
+</table>
+
+<h3>3.5 多人抢唱房</h3>
+<table>
+  <colgroup><col span="1" width="92"/><col span="1" width="140"/><col span="1" width="270"/><col span="1" width="260"/><col span="1" width="70"/><col span="1" width="300"/></colgroup>
+  <thead>
+    <tr><th background-color="light-gray">编号</th><th background-color="light-gray">功能点</th><th background-color="light-gray">需求说明</th><th background-color="light-gray">交互/规则</th><th background-color="light-gray">优先级</th><th background-color="light-gray">验收标准</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>GAME-01</td><td>房间顶部信息</td><td>展示房间号、在线人数、轮次和退出入口。</td><td>顶部信息在非结算态展示；退出后返回上一层。</td><td>P0</td><td>用户可识别当前房间、人数和轮次，并可退出。</td></tr>
+    <tr><td>GAME-02</td><td>玩家席位</td><td>展示 6 个玩家座位。</td><td>座位包含编号、头像和昵称；当前演唱者需高亮。</td><td>P0</td><td>房间内有 6 个座位，玩家信息清晰可见。</td></tr>
+    <tr><td>GAME-03</td><td>准备阶段</td><td>支持 READY 操作和 60 秒倒计时。</td><td>倒计时结束自动进入抢唱；点击 READY 可提前进入。</td><td>P0</td><td>倒计时和 READY 按钮均可驱动阶段切换。</td></tr>
+    <tr><td>GAME-04</td><td>抢唱阶段</td><td>展示歌曲信息、当前歌词和 BUZZ 抢麦按钮。</td><td>点击 BUZZ 后用户获得演唱机会，并进入演唱阶段。</td><td>P0</td><td>点击 BUZZ 后状态切换为演唱，按钮文案变为 SUBMIT。</td></tr>
+    <tr><td>GAME-05</td><td>演唱阶段</td><td>展示歌词、生命值，并允许提交本轮表现。</td><td>点击 SUBMIT 后生成本轮结果；Miss 时扣减生命值。</td><td>P0</td><td>提交后展示 Success 或 Miss，并展示累计得分。</td></tr>
+    <tr><td>GAME-06</td><td>单轮结果</td><td>每轮结束展示结果反馈。</td><td>结果短暂展示后进入下一轮；达到结束条件时进入结算。</td><td>P0</td><td>每轮提交后有结果弹层，随后状态正确流转。</td></tr>
+    <tr><td>GAME-07</td><td>结束结算</td><td>展示总分、轮次、玩家排行、Buzz 次数和 Success 次数。</td><td>当前用户在排行中高亮；支持确认返回房间。</td><td>P0</td><td>结算页信息完整，点击确认后回到房间等待下一局。</td></tr>
+  </tbody>
+</table>
+
+<h3>3.6 房间社交互动</h3>
+<table>
+  <colgroup><col span="1" width="92"/><col span="1" width="140"/><col span="1" width="270"/><col span="1" width="260"/><col span="1" width="70"/><col span="1" width="300"/></colgroup>
+  <thead>
+    <tr><th background-color="light-gray">编号</th><th background-color="light-gray">功能点</th><th background-color="light-gray">需求说明</th><th background-color="light-gray">交互/规则</th><th background-color="light-gray">优先级</th><th background-color="light-gray">验收标准</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>SOC-01</td><td>表情互动</td><td>用户可在房间内发送表情。</td><td>点击表情按钮后出现飘屏动效。</td><td>P1</td><td>点击表情按钮后页面出现对应动效。</td></tr>
+    <tr><td>SOC-02</td><td>房间聊天</td><td>用户可展开房间聊天面板并发送消息。</td><td>聊天面板展示最近消息；空输入不可发送。</td><td>P1</td><td>可打开聊天、输入、发送，并在消息区看到新消息。</td></tr>
+    <tr><td>SOC-03</td><td>礼物</td><td>用户可在房间内送礼。</td><td>送礼后扣除金币并展示提示和动效。</td><td>P1</td><td>送礼后金币减少，页面出现送礼反馈。</td></tr>
+    <tr><td>SOC-04</td><td>声音控制</td><td>支持静音和取消静音。</td><td>点击声音按钮切换静音状态和图标。</td><td>P1</td><td>按钮状态与当前声音状态一致。</td></tr>
+    <tr><td>SOC-05</td><td>玩家资料卡</td><td>点击玩家席位可查看资料卡。</td><td>资料卡展示头像、昵称、座位和用户 ID。</td><td>P1</td><td>点击席位后资料卡打开，点击关闭或遮罩可收起。</td></tr>
+    <tr><td>SOC-06</td><td>关注与送礼</td><td>资料卡中支持关注和给玩家送礼。</td><td>关注后按钮变为 Following；送礼复用礼物扣费规则。</td><td>P1</td><td>关注状态可更新，资料卡送礼有反馈。</td></tr>
+  </tbody>
+</table>
+
+<h3>3.7 消息 Messages</h3>
+<table>
+  <colgroup><col span="1" width="92"/><col span="1" width="140"/><col span="1" width="270"/><col span="1" width="260"/><col span="1" width="70"/><col span="1" width="300"/></colgroup>
+  <thead>
+    <tr><th background-color="light-gray">编号</th><th background-color="light-gray">功能点</th><th background-color="light-gray">需求说明</th><th background-color="light-gray">交互/规则</th><th background-color="light-gray">优先级</th><th background-color="light-gray">验收标准</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>MSG-01</td><td>会话列表</td><td>展示用户会话列表。</td><td>每条会话包含头像、昵称、在线状态、最新消息和时间。</td><td>P1</td><td>消息页可看到完整会话列表。</td></tr>
+    <tr><td>MSG-02</td><td>搜索</td><td>支持搜索用户、俱乐部或消息。</td><td>搜索框位于会话列表顶部。</td><td>P2</td><td>搜索框可输入关键词，样式和占位文案正确。</td></tr>
+    <tr><td>MSG-03</td><td>进入私聊</td><td>点击会话进入聊天详情。</td><td>聊天页展示对方头像、昵称和在线状态。</td><td>P1</td><td>点击任意会话可进入对应聊天页。</td></tr>
+    <tr><td>MSG-04</td><td>聊天记录</td><td>展示双方历史消息。</td><td>我的消息靠右，对方消息靠左；展示发送时间。</td><td>P1</td><td>聊天记录按身份区分展示。</td></tr>
+    <tr><td>MSG-05</td><td>发送消息</td><td>用户可输入并发送私聊消息。</td><td>空输入不可发送；发送后更新会话列表最新消息。</td><td>P1</td><td>消息发送后出现在聊天记录中，并同步到会话列表。</td></tr>
+    <tr><td>MSG-06</td><td>返回列表</td><td>聊天详情支持返回会话列表。</td><td>点击返回按钮回到消息列表，保留最新会话状态。</td><td>P1</td><td>返回后可看到更新后的会话内容。</td></tr>
+  </tbody>
+</table>
+
+<h3>3.8 我的 Me</h3>
+<table>
+  <colgroup><col span="1" width="92"/><col span="1" width="140"/><col span="1" width="270"/><col span="1" width="260"/><col span="1" width="70"/><col span="1" width="300"/></colgroup>
+  <thead>
+    <tr><th background-color="light-gray">编号</th><th background-color="light-gray">功能点</th><th background-color="light-gray">需求说明</th><th background-color="light-gray">交互/规则</th><th background-color="light-gray">优先级</th><th background-color="light-gray">验收标准</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ME-01</td><td>个人主页</td><td>展示用户头像、昵称、VIP、等级、粉丝、关注和作品数。</td><td>信息集中展示在页面顶部。</td><td>P1</td><td>我的页面顶部信息完整展示。</td></tr>
+    <tr><td>ME-02</td><td>成就徽章</td><td>展示用户已解锁徽章。</td><td>徽章包含名称、图标、说明和解锁状态。</td><td>P1</td><td>至少展示 3 个徽章条目。</td></tr>
+    <tr><td>ME-03</td><td>我的翻唱</td><td>展示用户历史翻唱作品。</td><td>作品包含歌曲名、歌手、评分、时长、点赞数和播放入口。</td><td>P1</td><td>作品列表可见，并可点击播放。</td></tr>
+    <tr><td>ME-04</td><td>点赞作品</td><td>用户可对作品点赞。</td><td>点击点赞按钮后点赞数增加；不触发播放。</td><td>P1</td><td>点击点赞按钮后数值变化且不打开播放浮层。</td></tr>
+    <tr><td>ME-05</td><td>播放浮层</td><td>点击作品后打开底部播放浮层。</td><td>浮层展示当前作品、评分、播放状态和进度。</td><td>P1</td><td>点击作品后出现播放浮层，进度可展示变化。</td></tr>
+    <tr><td>ME-06</td><td>播放控制</td><td>支持播放、暂停和关闭浮层。</td><td>播放状态切换时按钮图标同步变化。</td><td>P1</td><td>播放、暂停、关闭操作均可正常执行。</td></tr>
+  </tbody>
+</table>
+
+<h3>3.9 资料与商城</h3>
+<table>
+  <colgroup><col span="1" width="92"/><col span="1" width="140"/><col span="1" width="270"/><col span="1" width="260"/><col span="1" width="70"/><col span="1" width="300"/></colgroup>
+  <thead>
+    <tr><th background-color="light-gray">编号</th><th background-color="light-gray">功能点</th><th background-color="light-gray">需求说明</th><th background-color="light-gray">交互/规则</th><th background-color="light-gray">优先级</th><th background-color="light-gray">验收标准</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>SHOP-01</td><td>资料弹层</td><td>用户可从首页头像进入资料弹层。</td><td>弹层包含 User Profile 和 Recharge Shop 两个 Tab。</td><td>P1</td><td>资料弹层可打开、切换 Tab、关闭。</td></tr>
+    <tr><td>SHOP-02</td><td>用户资料</td><td>展示头像、昵称、等级、经验进度、等级奖励和个人称号。</td><td>经验进度以进度条展示。</td><td>P1</td><td>资料页各字段展示完整，进度条数值正确。</td></tr>
+    <tr><td>SHOP-03</td><td>VIP 状态</td><td>展示并切换 VIP Membership Status。</td><td>点击按钮切换 Active/Enable 状态，并给出反馈。</td><td>P1</td><td>VIP 状态切换后页面标识同步更新。</td></tr>
+    <tr><td>SHOP-04</td><td>麦克风校准入口</td><td>资料页展示麦克风校准入口。</td><td>入口作为后续校准能力承接，当前需具备可点击样式。</td><td>P2</td><td>用户能在资料页看到麦克风校准入口。</td></tr>
+    <tr><td>SHOP-05</td><td>金币套餐</td><td>商城展示金币充值套餐。</td><td>套餐包含数量、价格和赠送信息；点击后增加金币余额并提示成功。</td><td>P1</td><td>点击金币套餐后金币余额更新，出现成功提示。</td></tr>
+    <tr><td>SHOP-06</td><td>钻石套餐</td><td>商城展示钻石充值套餐。</td><td>套餐包含数量、价格和赠送信息；点击后增加钻石余额并提示成功。</td><td>P1</td><td>点击钻石套餐后钻石余额更新，出现成功提示。</td></tr>
+    <tr><td>SHOP-07</td><td>购买反馈</td><td>用户完成购买操作后展示成功反馈。</td><td>反馈以顶部 Toast 展示，自动消失。</td><td>P1</td><td>购买后 Toast 出现并自动关闭。</td></tr>
+  </tbody>
+</table>
+
+<h2>4. 全局验收要求</h2>
+<table>
+  <colgroup><col span="1" width="120"/><col span="1" width="520"/></colgroup>
+  <thead>
+    <tr><th background-color="light-gray">类别</th><th background-color="light-gray">要求</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>移动端适配</td><td>所有页面与弹层需适配主流移动端宽度，按钮、文字、列表项不得遮挡或溢出。</td></tr>
+    <tr><td>状态反馈</td><td>涉及点击、切换、发送、购买、送礼、关注、抢麦等操作，均需给出明确反馈。</td></tr>
+    <tr><td>流程闭环</td><td>核心流程必须完成从首页 Quick Start 到抢唱结算并返回房间的闭环。</td></tr>
+    <tr><td>空态与异常</td><td>列表、消息、房间、作品、资产等模块需预留空态和异常提示位置。</td></tr>
+    <tr><td>文案一致</td><td>同一功能在不同页面的命名需保持一致，例如 Quick Start、BUZZ、READY、SUBMIT、Messages、Me。</td></tr>
+  </tbody>
+</table>

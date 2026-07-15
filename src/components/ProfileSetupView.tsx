@@ -21,16 +21,18 @@ const avatarOptions = [
   'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200'
 ];
 
-export default function ProfileSetupView({ initialProfile, onComplete }: ProfileSetupViewProps) {
+export default function ProfileSetupView({ onComplete }: ProfileSetupViewProps) {
   const [name, setName] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState(initialProfile.avatarUrl);
-  const [gender, setGender] = useState<BasicProfileInfo['gender']>('other');
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [gender, setGender] = useState<BasicProfileInfo['gender'] | null>(null);
   const [birthday, setBirthday] = useState('');
+  const basicInfoComplete = Boolean(name.trim() && gender && birthday);
+  const canSubmit = basicInfoComplete && Boolean(avatarUrl);
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     const trimmedName = name.trim();
-    if (!trimmedName) return;
+    if (!canSubmit || !gender) return;
     onComplete({ name: trimmedName, avatarUrl, gender, birthday });
   };
 
@@ -45,24 +47,7 @@ export default function ProfileSetupView({ initialProfile, onComplete }: Profile
           <p className="mt-1 text-xs font-semibold text-white/48">让房间里的朋友认识你</p>
         </div>
 
-        <div className="mt-7">
-          <p className="mb-3 text-xs font-black text-white/72">选择头像</p>
-          <div className="flex justify-between">
-            {avatarOptions.map((avatar) => (
-              <button
-                key={avatar}
-                type="button"
-                onClick={() => setAvatarUrl(avatar)}
-                className={`h-[3.65rem] w-[3.65rem] overflow-hidden rounded-full border-2 p-0.5 transition ${avatarUrl === avatar ? 'border-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.55)]' : 'border-white/14'}`}
-                aria-label="选择头像"
-              >
-                <img src={avatar} alt="" className="h-full w-full rounded-full object-cover" referrerPolicy="no-referrer" />
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <label className="mt-6 block">
+        <label className="mt-7 block">
           <span className="mb-2 block text-xs font-black text-white/72">昵称</span>
           <span className="flex h-12 items-center gap-2 rounded-xl border border-white/12 bg-white/7 px-3 focus-within:border-fuchsia-300/55">
             <UserRound className="h-4 w-4 text-white/38" />
@@ -94,7 +79,7 @@ export default function ProfileSetupView({ initialProfile, onComplete }: Profile
         </div>
 
         <label className="mt-5 block">
-          <span className="mb-2 block text-xs font-black text-white/72">生日（选填）</span>
+          <span className="mb-2 block text-xs font-black text-white/72">生日</span>
           <span className="flex h-12 items-center gap-2 rounded-xl border border-white/12 bg-white/7 px-3">
             <CalendarDays className="h-4 w-4 text-white/38" />
             <input
@@ -107,9 +92,28 @@ export default function ProfileSetupView({ initialProfile, onComplete }: Profile
           </span>
         </label>
 
+        {basicInfoComplete && (
+          <div className="mt-5">
+            <p className="mb-3 text-xs font-black text-white/72">选择头像</p>
+            <div className="flex justify-between">
+              {avatarOptions.map((avatar) => (
+                <button
+                  key={avatar}
+                  type="button"
+                  onClick={() => setAvatarUrl(avatar)}
+                  className={`h-[3.65rem] w-[3.65rem] overflow-hidden rounded-full border-2 p-0.5 transition ${avatarUrl === avatar ? 'border-cyan-300 shadow-[0_0_18px_rgba(34,211,238,0.55)]' : 'border-white/14'}`}
+                  aria-label="选择头像"
+                >
+                  <img src={avatar} alt="" className="h-full w-full rounded-full object-cover" referrerPolicy="no-referrer" />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <button
           type="submit"
-          disabled={!name.trim()}
+          disabled={!canSubmit}
           className="mt-auto flex h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-400 text-sm font-black text-white shadow-[0_0_24px_rgba(236,72,153,0.3)] disabled:cursor-not-allowed disabled:opacity-35"
         >
           进入 StarMaker Rush

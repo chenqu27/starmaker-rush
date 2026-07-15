@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, Send, ArrowLeft, MoreVertical, CheckCheck, Smile } from 'lucide-react';
+import { Send, ArrowLeft, MoreVertical, Smile } from 'lucide-react';
 import { Message } from '../types';
 import { sampleMessages } from '../data';
 
@@ -86,15 +86,6 @@ export default function MessagesTab() {
               <h1 className="text-xl font-display font-black tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-400">
                 Inbox
               </h1>
-              {/* Search bar */}
-              <div className="flex items-center gap-2 bg-[#12122d] border border-white/5 rounded-xl px-3 py-2 mt-3 text-xs text-gray-400">
-                <Search className="w-4 h-4 text-gray-500" />
-                <input 
-                  type="text" 
-                  placeholder="Search vocalists, clubs, or messages..." 
-                  className="bg-transparent flex-1 outline-none text-white placeholder-gray-500"
-                />
-              </div>
             </div>
 
             {/* List */}

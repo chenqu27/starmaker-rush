@@ -31,17 +31,14 @@ export const HomeView = ({ initialProfile = initialUserProfile, rushDemoCommand,
   const [rooms] = useState<Room[]>(sampleRooms);
   const [activeCarouselIndex, setActiveCarouselIndex] = useState(1);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
-  const [shopInitialTab, setShopInitialTab] = useState<'profile' | 'shop'>('profile');
   const [matchmakingOpen, setMatchmakingOpen] = useState(false);
   const [activeRoomSession, setActiveRoomSession] = useState<ActiveRoomSession | null>(null);
 
   const handleOpenProfile = () => {
-    setShopInitialTab('profile');
-    setProfileModalOpen(true);
+    setActiveTab('me');
   };
 
-  const handleOpenShop = () => {
-    setShopInitialTab('shop');
+  const handleOpenShop = (_type?: 'coins' | 'diamonds') => {
     setProfileModalOpen(true);
   };
 
@@ -239,9 +236,7 @@ export const HomeView = ({ initialProfile = initialUserProfile, rushDemoCommand,
 
         {profileModalOpen && (
           <ProfileModal
-            user={userProfile}
             setUser={setUserProfile}
-            initialTab={shopInitialTab}
             onClose={() => setProfileModalOpen(false)}
           />
         )}
