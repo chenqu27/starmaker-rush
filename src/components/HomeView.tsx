@@ -22,16 +22,19 @@ type ActiveRoomSession = {
 interface HomeViewProps {
   initialProfile?: UserProfile;
   rushDemoCommand?: RushDemoCommand | null;
+  rushDemoPaused?: boolean;
   onRushPhaseChange?: (phase: RushRoomPhase | null) => void;
 }
 
-export const HomeView = ({ initialProfile = initialUserProfile, rushDemoCommand, onRushPhaseChange }: HomeViewProps) => {
+export const HomeView = ({ initialProfile = initialUserProfile, rushDemoCommand, rushDemoPaused = false, onRushPhaseChange }: HomeViewProps) => {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [userProfile, setUserProfile] = useState<UserProfile>(initialProfile);
   const [rooms] = useState<Room[]>(sampleRooms);
   const [activeCarouselIndex, setActiveCarouselIndex] = useState(1);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [matchmakingOpen, setMatchmakingOpen] = useState(false);
+  const [quickStartSessionKey, setQuickStartSessionKey] = useState(0);
+  const [activeQuickStartCommand, setActiveQuickStartCommand] = useState<RushDemoCommand | null>(null);
   const [activeRoomSession, setActiveRoomSession] = useState<ActiveRoomSession | null>(null);
 
   const handleOpenProfile = () => {
@@ -48,8 +51,24 @@ export const HomeView = ({ initialProfile = initialUserProfile, rushDemoCommand,
     if (!rushDemoCommand) return;
 
     setActiveRoomSession(null);
+    setActiveQuickStartCommand(rushDemoCommand);
+    setQuickStartSessionKey((key) => key + 1);
     setMatchmakingOpen(true);
   }, [rushDemoCommand]);
+
+  const handleOpenQuickStart = () => {
+    setActiveRoomSession(null);
+    setActiveQuickStartCommand(null);
+    setQuickStartSessionKey((key) => key + 1);
+    setMatchmakingOpen(true);
+    onRushPhaseChange?.(null);
+  };
+
+  const handleCloseQuickStart = () => {
+    setMatchmakingOpen(false);
+    setActiveQuickStartCommand(null);
+    onRushPhaseChange?.(null);
+  };
 
   const handleEnterRoom = (room: Room) => {
     setActiveRoomSession({
@@ -116,7 +135,7 @@ export const HomeView = ({ initialProfile = initialUserProfile, rushDemoCommand,
               <motion.button
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.96 }}
-                onClick={() => setMatchmakingOpen(true)}
+                onClick={handleOpenQuickStart}
                 className="relative flex h-14 w-full items-center justify-center gap-2 overflow-hidden rounded-[1.35rem] border border-white/20 bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-500 text-base font-black uppercase tracking-widest text-white shadow-[0_4px_25px_rgba(168,85,247,0.45)] font-display"
               >
                 <span className="absolute inset-0 w-1/2 -translate-x-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 animate-shine pointer-events-none" />
@@ -226,11 +245,13 @@ export const HomeView = ({ initialProfile = initialUserProfile, rushDemoCommand,
       <AnimatePresence>
         {matchmakingOpen && (
           <QuickStartModal
+            key={quickStartSessionKey}
             room={activeRoom}
             user={userProfile}
-            demoCommand={rushDemoCommand}
+            demoCommand={activeQuickStartCommand}
+            demoPaused={rushDemoPaused}
             onPhaseChange={onRushPhaseChange}
-            onClose={() => setMatchmakingOpen(false)}
+            onClose={handleCloseQuickStart}
           />
         )}
 

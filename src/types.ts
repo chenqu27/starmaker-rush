@@ -4,9 +4,11 @@ export type MatchState = 'SEARCHING' | 'FOUND' | 'INTRO_VS' | 'READY';
 
 export type RushDemoShortcut =
   | 'other-grabbed'
-  | 'round-ended';
+  | 'round-ended'
+  | 'user-left'
+  | 'users-ready';
 
-export type RushRoomPhase = 'ready' | 'live' | 'missed' | 'singing' | 'result' | 'ended';
+export type RushRoomPhase = 'intro' | 'ready' | 'live' | 'missed' | 'singing' | 'result' | 'ended';
 
 export interface RushDemoCommand {
   id: number;

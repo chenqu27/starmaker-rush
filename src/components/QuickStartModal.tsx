@@ -1,24 +1,43 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { HelpCircle, Satellite, Sparkles, X, Zap } from 'lucide-react';
 import { Room, RushDemoCommand, RushRoomPhase, Song, UserProfile, Player } from '../types';
 import SongRoom from './SongRoom';
+import avatar05 from '../assets/avatars/avatar_05.jpg';
+import avatar08 from '../assets/avatars/avatar_08.jpg';
+import avatar16 from '../assets/avatars/avatar_16.jpg';
+import avatar19 from '../assets/avatars/avatar_19.jpg';
+import avatar33 from '../assets/avatars/avatar_33.jpg';
+
+const fallbackMatchPlayers: Player[] = [
+  { name: 'Luna', avatarUrl: avatar05 },
+  { name: 'Jay', avatarUrl: avatar33 },
+  { name: 'Alex', avatarUrl: avatar19 },
+  { name: 'Mia', avatarUrl: avatar16 },
+  { name: 'Leo', avatarUrl: avatar08 }
+];
 
 interface QuickStartModalProps {
+  key?: number;
   room: Room;
   user: UserProfile;
   demoCommand?: RushDemoCommand | null;
+  demoPaused?: boolean;
   onPhaseChange?: (phase: RushRoomPhase | null) => void;
   onClose: () => void;
 }
 
-export default function QuickStartModal({ room, user, demoCommand, onPhaseChange, onClose }: QuickStartModalProps) {
+export default function QuickStartModal({ room, user, demoCommand, demoPaused = false, onPhaseChange, onClose }: QuickStartModalProps) {
+  const overlayRef = useRef<HTMLDivElement | null>(null);
   const [matchState, setMatchState] = useState<'matching' | 'identity' | 'active'>('matching');
+  const [matchRunKey, setMatchRunKey] = useState(0);
   const [matchedPlayers, setMatchedPlayers] = useState<Array<Player | null>>([
     { name: user.name, avatarUrl: user.avatarUrl }, // Spot 1 is always the user
     null, // Spot 2
     null, // Spot 3
-    null  // Spot 4
+    null, // Spot 4
+    null, // Spot 5
+    null  // Spot 6
   ]);
   const [selectedSong, setSelectedSong] = useState<Song>(room.songs[0]);
   const stars = Array.from({ length: 42 }, (_, idx) => ({
@@ -29,65 +48,92 @@ export default function QuickStartModal({ room, user, demoCommand, onPhaseChange
     delay: (idx % 9) * 0.22
   }));
   const orbitSlots = [
-    'left-[50%] top-[28%] -translate-x-1/2',
-    'left-[79%] top-[50%] -translate-x-1/2 -translate-y-1/2',
-    'left-[50%] top-[72%] -translate-x-1/2 -translate-y-full',
-    'left-[21%] top-[50%] -translate-x-1/2 -translate-y-1/2'
+    'left-[50%] top-[18%] -translate-x-1/2',
+    'left-[82%] top-[38%] -translate-x-1/2 -translate-y-1/2',
+    'left-[72%] top-[76%] -translate-x-1/2 -translate-y-full',
+    'left-[28%] top-[76%] -translate-x-1/2 -translate-y-full',
+    'left-[18%] top-[38%] -translate-x-1/2 -translate-y-1/2',
+    'left-[50%] top-[55%] -translate-x-1/2 -translate-y-1/2'
   ];
+  const matchingPool = useMemo(() => [...room.players, ...fallbackMatchPlayers].slice(0, 5), [room.players]);
 
   useEffect(() => {
+    const animations = overlayRef.current?.getAnimations({ subtree: true }) ?? [];
+    animations.forEach((animation) => {
+      if (demoPaused) {
+        animation.pause();
+      } else {
+        animation.play();
+      }
+    });
+  }, [demoPaused, matchState, matchedPlayers]);
+
+  useEffect(() => {
+    if (matchState !== 'matching') return undefined;
+    if (demoPaused) return undefined;
+
     // Select a random song from the room
     const randomSong = room.songs[Math.floor(Math.random() * room.songs.length)];
     setSelectedSong(randomSong);
 
     // Simulate matchmaking connections
-    const timer1 = setTimeout(() => {
-      // Player 2 connects
-      setMatchedPlayers(prev => [prev[0], room.players[0], null, null]);
-    }, 450);
-
-    const timer2 = setTimeout(() => {
-      // Player 3 connects
-      setMatchedPlayers(prev => [prev[0], prev[1], room.players[1], null]);
-    }, 900);
-
-    const timer3 = setTimeout(() => {
-      // Player 4 connects
-      setMatchedPlayers(prev => [prev[0], prev[1], prev[2], room.players[2]]);
-    }, 1350);
+    const matchTimers = [1, 2, 3, 4, 5].map((slot) => (
+      setTimeout(() => {
+        setMatchedPlayers((prev) => {
+          const next = [...prev];
+          next[slot] = next[slot] ?? matchingPool[slot - 1];
+          return next;
+        });
+      }, 320 + slot * 260)
+    ));
 
     const timer4 = setTimeout(() => {
       // Show round identity before entering the room.
-      setMatchState('identity');
-    }, 1650);
+      setMatchState((current) => current === 'matching' ? 'identity' : current);
+    }, 1900);
 
     const timer5 = setTimeout(() => {
-      setMatchState('active');
-    }, 3150);
+      setMatchState((current) => current === 'active' ? current : 'active');
+    }, 3400);
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
+      matchTimers.forEach(clearTimeout);
       clearTimeout(timer4);
       clearTimeout(timer5);
     };
-  }, [room]);
+  }, [demoPaused, matchRunKey, matchingPool, room]);
 
   useEffect(() => {
     if (!demoCommand) return;
+    if (demoCommand.shortcut === 'user-left') return;
 
     setMatchedPlayers([
       { name: user.name, avatarUrl: user.avatarUrl },
-      room.players[0],
-      room.players[1],
-      room.players[2]
+      matchingPool[0],
+      matchingPool[1],
+      matchingPool[2],
+      matchingPool[3],
+      matchingPool[4]
     ]);
     setMatchState('active');
-  }, [demoCommand, room.players, user.avatarUrl, user.name]);
+  }, [demoCommand, matchingPool, user.avatarUrl, user.name]);
+
+  const restartMatching = () => {
+    onPhaseChange?.(null);
+    setMatchedPlayers([
+      { name: user.name, avatarUrl: user.avatarUrl },
+      null,
+      null,
+      null,
+      null,
+      null
+    ]);
+    setMatchRunKey((key) => key + 1);
+    setMatchState('matching');
+  };
 
   return (
-    <div id="matchmaker-overlay" className="absolute inset-0 z-50 overflow-hidden bg-[#02020c] text-white select-none">
+    <div ref={overlayRef} id="matchmaker-overlay" className="absolute inset-0 z-50 overflow-hidden bg-[#02020c] text-white select-none">
       <AnimatePresence mode="wait">
         {matchState !== 'active' ? (
           <motion.div
@@ -219,7 +265,7 @@ export default function QuickStartModal({ room, user, demoCommand, onPhaseChange
                 className="absolute inset-x-0 top-[12%] z-30 flex flex-col items-center px-8 text-center"
               >
                 <p className="rounded-full border border-fuchsia-300/18 bg-black/24 px-4 py-2 text-[0.72rem] font-black tracking-wide text-fuchsia-100 shadow-[0_0_22px_rgba(236,72,153,0.2)] backdrop-blur-md">
-                  陈工匹配到本轮身份
+                  成功匹配到本轮身份
                 </p>
 
                 <motion.div
@@ -282,7 +328,9 @@ export default function QuickStartModal({ room, user, demoCommand, onPhaseChange
             song={selectedSong}
             currentUserAvatar={user.avatarUrl}
             demoCommand={demoCommand}
+            demoPaused={demoPaused}
             onPhaseChange={onPhaseChange}
+            onRequestRematch={restartMatching}
             onClose={onClose}
           />
         )}

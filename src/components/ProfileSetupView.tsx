@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { ArrowRight, CalendarDays, UserRound } from 'lucide-react';
 import { UserProfile } from '../types';
 import avatar03 from '../assets/avatars/avatar_03.jpg';
@@ -30,8 +30,22 @@ export default function ProfileSetupView({ onComplete }: ProfileSetupViewProps) 
   const [avatarUrl, setAvatarUrl] = useState('');
   const [gender, setGender] = useState<BasicProfileInfo['gender'] | null>(null);
   const [birthday, setBirthday] = useState('');
+  const birthdayInputRef = useRef<HTMLInputElement>(null);
   const basicInfoComplete = Boolean(name.trim() && gender && birthday);
   const canSubmit = basicInfoComplete && Boolean(avatarUrl);
+
+  useEffect(() => {
+    if (basicInfoComplete && !avatarUrl) {
+      setAvatarUrl(avatarOptions[0]);
+    }
+  }, [avatarUrl, basicInfoComplete]);
+
+  const openBirthdayPicker = () => {
+    const input = birthdayInputRef.current;
+    if (!input) return;
+    input.focus();
+    input.showPicker?.();
+  };
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -84,14 +98,18 @@ export default function ProfileSetupView({ onComplete }: ProfileSetupViewProps) 
 
         <label className="mt-5 block">
           <span className="mb-2 block text-xs font-black text-white/72">生日</span>
-          <span className="flex h-12 items-center gap-2 rounded-xl border border-white/12 bg-white/7 px-3">
+          <span
+            className="flex h-12 cursor-pointer items-center gap-2 rounded-xl border border-white/12 bg-white/7 px-3 focus-within:border-fuchsia-300/55"
+            onClick={openBirthdayPicker}
+          >
             <CalendarDays className="h-4 w-4 text-white/38" />
             <input
+              ref={birthdayInputRef}
               type="date"
               value={birthday}
               max={new Date().toISOString().slice(0, 10)}
               onChange={(event) => setBirthday(event.target.value)}
-              className="min-w-0 flex-1 bg-transparent text-sm font-bold text-white/78 outline-none [color-scheme:dark]"
+              className="min-w-0 flex-1 cursor-pointer bg-transparent text-sm font-bold text-white/78 outline-none [color-scheme:dark]"
             />
           </span>
         </label>

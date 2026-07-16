@@ -16,8 +16,10 @@ export default function App() {
   const [rushDemoCommand, setRushDemoCommand] = useState<RushDemoCommand | null>(null);
   const [activeDemoShortcut, setActiveDemoShortcut] = useState<RushDemoShortcut | null>(null);
   const [rushRoomPhase, setRushRoomPhase] = useState<RushRoomPhase | null>(null);
+  const [rushDemoPaused, setRushDemoPaused] = useState(false);
 
   const handleRushDemoJump = (shortcut: RushDemoShortcut) => {
+    setRushDemoPaused(false);
     setActiveDemoShortcut(shortcut);
     setRushDemoCommand({
       id: Date.now(),
@@ -79,6 +81,7 @@ export default function App() {
               <HomeView
                 initialProfile={basicProfile ? { ...initialUserProfile, ...basicProfile } : initialUserProfile}
                 rushDemoCommand={rushDemoCommand}
+                rushDemoPaused={rushDemoPaused}
                 onRushPhaseChange={setRushRoomPhase}
               />
             )}
@@ -89,6 +92,8 @@ export default function App() {
             disabled={entryStep !== 'home'}
             roomPhase={rushRoomPhase}
             activeShortcut={activeDemoShortcut}
+            paused={rushDemoPaused}
+            onTogglePause={() => setRushDemoPaused((prev) => !prev)}
             onJump={handleRushDemoJump}
           />
         </div>
