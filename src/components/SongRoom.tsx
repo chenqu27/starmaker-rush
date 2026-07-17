@@ -264,6 +264,7 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
   const singer = players[(round + 1) % players.length];
   const displayedSeats = players.map((player) => player.seat === vacatedSeat ? null : player);
   const activeReadyPlayers = displayedSeats.filter((player): player is SeatPlayer => Boolean(player));
+  const giftRecipientSeats = displayedSeats.filter((player): player is SeatPlayer => Boolean(player && player.name !== 'You'));
   const youReady = readyPlayerNames.has('You');
   const allPlayersReady = activeReadyPlayers.length > 0 && activeReadyPlayers.every((player) => readyPlayerNames.has(player.name));
   const scoreboard = players.map((player, index) => {
@@ -785,14 +786,14 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
   };
 
   const openGiftPanel = (playerName?: string, mode: 'all' | 'single' = 'all') => {
-    const firstPlayer = displayedSeats.find((player): player is SeatPlayer => Boolean(player));
-    setGiftRecipientName(playerName ?? firstPlayer?.name ?? 'You');
+    const firstRecipient = giftRecipientSeats[0] ?? players.find((player) => player.name !== 'You') ?? players[0];
+    setGiftRecipientName(playerName ?? firstRecipient?.name ?? 'You');
     setGiftPanelMode(mode);
     setGiftPanelOpen(true);
   };
 
   const handleGift = (gift: { icon: string; price: number }) => {
-    const recipient = players.find((player) => player.name === giftRecipientName) ?? players.find((player) => player.name === 'You') ?? players[0];
+    const recipient = players.find((player) => player.name === giftRecipientName) ?? giftRecipientSeats[0] ?? players.find((player) => player.name !== 'You') ?? players[0];
     const you = players.find((player) => player.name === 'You') ?? players[0];
     const id = Date.now();
     setCoins((prev) => Math.max(0, prev - gift.price));
@@ -1130,15 +1131,15 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
                     ) : (
                       <Users className="h-4 w-4 text-white/28" />
                     )}
+                    {player?.name === 'You' && floatingEmojis.map((item) => (
+                      <span
+                        key={item.id}
+                        className="pointer-events-none absolute inset-0 z-50 flex items-center justify-center bg-black/12 text-[2.9rem] leading-none drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"
+                      >
+                        {item.emoji}
+                      </span>
+                    ))}
                   </div>
-                  {player?.name === 'You' && floatingEmojis.map((item) => (
-                    <span
-                      key={item.id}
-                      className="pointer-events-none absolute left-1/2 top-[-1.55rem] z-50 -translate-x-1/2 text-2xl leading-none drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]"
-                    >
-                      {item.emoji}
-                    </span>
-                  ))}
                   {player && phase === 'ready' && readyPlayerNames.has(player.name) && (
                     <span className="absolute right-0 top-0 z-20 h-3.5 w-3.5 rounded-full border-2 border-[#080024] bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.95)]" />
                   )}
@@ -1409,7 +1410,7 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
                 <div className="mb-4 flex items-start gap-2 overflow-hidden">
                   {(giftPanelMode === 'single'
                     ? displayedSeats.filter((player): player is SeatPlayer => Boolean(player && player.name === giftRecipientName))
-                    : displayedSeats
+                    : giftRecipientSeats
                   ).map((player, index) => (
                     <button
                       key={`${player?.name ?? 'empty'}-${index}`}
