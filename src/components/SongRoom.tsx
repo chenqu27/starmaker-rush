@@ -340,11 +340,11 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
   }, [phase, onPhaseChange]);
 
   useEffect(() => {
-    if (phase !== 'ready' || !allPlayersReady) return;
+    if (phase !== 'ready' || vacatedSeat !== null || !allPlayersReady) return;
 
     setReadyCountdown(0);
     setPhase('intro');
-  }, [allPlayersReady, phase]);
+  }, [allPlayersReady, phase, vacatedSeat]);
 
   useEffect(() => {
     if (phase !== 'intro' || demoHold || demoPaused) return undefined;
@@ -711,7 +711,7 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
         setReadyPlayerNames((prev) => {
           const next = new Set(prev);
           displayedSeats.forEach((player) => {
-            if (player) {
+            if (player && player.name !== 'You') {
               next.add(player.name);
             }
           });
@@ -748,6 +748,11 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
     setChats((items) => [...items.slice(-3), { sender: 'You', text: 'Ready!' }]);
 
     if (activeReadyPlayers.every((player) => nextReadyPlayers.has(player.name))) {
+      if (vacatedSeat !== null) {
+        onRequestRematch?.();
+        return;
+      }
+
       setReadyCountdown(0);
       setPhase('intro');
     }
