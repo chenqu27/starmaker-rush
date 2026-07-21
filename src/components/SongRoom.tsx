@@ -77,6 +77,10 @@ const GAME_START_INTRO_MS = 2000;
 const GRAB_RESULT_DELAY_MS = 2000;
 const OPPONENT_SUBMIT_DELAY_MS = 4000;
 const OPPONENT_SUCCESS_CARD_MS = 1500;
+const SUCCESS_ANIMATION_SCALE = 1.3;
+const SUCCESS_CARD_MS = 1500 * SUCCESS_ANIMATION_SCALE;
+const CELEBRATE_EXIT_MS = 2000 * SUCCESS_ANIMATION_SCALE;
+const CELEBRATE_HIDE_MS = 3450 * SUCCESS_ANIMATION_SCALE;
 const LYRIC_WINDOW_SECONDS = 9;
 const SUBMIT_WINDOW_SECONDS = LYRIC_WINDOW_SECONDS * 2;
 const TOTAL_ROUNDS = 12;
@@ -138,13 +142,13 @@ function SingingCharacter({ stage }: { stage: SingerStage }) {
       transition={
         stage === 'singing'
           ? { repeat: Infinity, duration: 0.9, ease: 'easeInOut' }
-          : { duration: stage === 'celebrate' ? 0.9 : stage === 'sad' ? 1.2 : 1.4, ease: 'easeInOut' }
+          : { duration: stage === 'celebrate' ? 0.9 * SUCCESS_ANIMATION_SCALE : stage === 'sad' ? 1.2 : 1.4, ease: 'easeInOut' }
       }
       className="pointer-events-none absolute left-1/2 top-[38%] z-[25] h-56 w-40 -translate-x-1/2"
     >
       <motion.div
         animate={isCelebrate ? { rotate: [-4, 8, -6, 5, 0] } : isSad ? { rotate: [0, -6, 4, -3] } : isSinging ? { rotate: [-2, 2, -2] } : {}}
-        transition={{ repeat: isSinging ? Infinity : 0, duration: 0.72 }}
+        transition={{ repeat: isSinging ? Infinity : 0, duration: isCelebrate ? 0.72 * SUCCESS_ANIMATION_SCALE : 0.72 }}
         className="relative h-full w-full"
       >
         <div className="absolute left-1/2 top-0 h-[4.7rem] w-[4.7rem] -translate-x-1/2 rounded-full border-2 border-white/18 bg-gradient-to-br from-amber-100 via-pink-100 to-fuchsia-200 shadow-[0_0_18px_rgba(251,191,36,0.28)]">
@@ -226,6 +230,7 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
   const [introCue, setIntroCue] = useState<'ready' | 'go'>('ready');
   const [singerStage, setSingerStage] = useState<SingerStage>('hidden');
   const [roomMenuOpen, setRoomMenuOpen] = useState(false);
+  const [gameplayCardOpen, setGameplayCardOpen] = useState(false);
   const [exitConfirmOpen, setExitConfirmOpen] = useState(false);
   const [coins, setCoins] = useState(2860);
   const [chatOpen, setChatOpen] = useState(false);
@@ -467,7 +472,7 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
       if (phase === 'singing' && (grabWinner === 'me' || grabWinner === 'other')) {
         setSingerStage('enter');
       }
-    }, 1500);
+    }, SUCCESS_CARD_MS);
     return () => window.clearTimeout(timer);
   }, [grabWinner, phase, successCardVisible, demoPaused]);
 
@@ -519,8 +524,8 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
   useEffect(() => {
     if (singerStage !== 'celebrate' || demoPaused) return undefined;
 
-    const exitTimer = window.setTimeout(() => setSingerStage('exit'), 2000);
-    const hideTimer = window.setTimeout(() => setSingerStage('hidden'), 3450);
+    const exitTimer = window.setTimeout(() => setSingerStage('exit'), CELEBRATE_EXIT_MS);
+    const hideTimer = window.setTimeout(() => setSingerStage('hidden'), CELEBRATE_HIDE_MS);
     return () => {
       window.clearTimeout(exitTimer);
       window.clearTimeout(hideTimer);
@@ -585,9 +590,9 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
     if (phase !== 'result' || demoHold || demoPaused) return undefined;
 
     const resultDelay = grabWinner === 'me'
-      ? (lastSuccess ? 4700 : 4000)
+      ? (lastSuccess ? 4700 * SUCCESS_ANIMATION_SCALE : 4000)
       : grabWinner === 'other'
-        ? 5200
+        ? 5200 * SUCCESS_ANIMATION_SCALE
         : 1800;
 
     const timer = window.setTimeout(() => {
@@ -696,7 +701,8 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
 
   const handleGameplayInfo = () => {
     setRoomMenuOpen(false);
-    showToast('游戏玩法');
+    setToast('');
+    setGameplayCardOpen(true);
   };
 
   const handleExitRoom = () => {
@@ -945,6 +951,81 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
           ))}
         </div>
       )}
+
+      <AnimatePresence>
+        {gameplayCardOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="absolute inset-0 z-[105] flex items-start justify-center bg-black/42 px-8 pt-[8.35rem] backdrop-blur-[1px]"
+            onClick={() => setGameplayCardOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 16, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.96 }}
+              transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+              className="relative max-h-[calc(100vh-12rem)] w-full max-w-[19.5rem] rounded-[1.05rem] border-[1.5px] border-[#8350bd]/90 bg-[#351a52]/96 px-5 pb-8 pt-5 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_20px_50px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-md"
+              onClick={(event) => event.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label="游戏玩法"
+            >
+              <div className="pointer-events-none absolute right-3 top-0 h-36 w-36 overflow-hidden rounded-tr-[1rem] opacity-45">
+                <div className="absolute right-2 top-1 h-28 w-28 rounded-full bg-[radial-gradient(circle_at_45%_45%,rgba(255,255,255,0.08)_0_13%,rgba(76,36,103,0.82)_14%_28%,rgba(21,9,43,0.7)_29%_42%,rgba(80,35,113,0.6)_43%_56%,rgba(15,6,34,0.72)_57%_100%)] shadow-[inset_0_0_28px_rgba(0,0,0,0.35)]" />
+                <div className="absolute right-10 top-8 text-5xl leading-none text-fuchsia-300/70 drop-shadow-[0_0_12px_rgba(236,72,153,0.45)]">♪</div>
+                <div className="absolute right-24 top-14 text-lg leading-none text-fuchsia-300/42">♫</div>
+              </div>
+
+              <h2 className="relative z-10 text-center font-display text-lg font-black leading-none text-white">游戏玩法</h2>
+
+              <div className="relative z-10 mt-7 space-y-6 text-[0.86rem] font-semibold leading-[1.72] text-white/62">
+                <section>
+                  <h3 className="mb-3 font-display text-[0.98rem] font-black leading-none text-white">1、抢唱玩法</h3>
+                  <ol className="space-y-3">
+                    <li>
+                      1. 系统给出歌曲片段的上半部分，玩家通过按
+                      <span className="font-black text-[#fff55f]">抢唱按钮</span>
+                      获得接唱机会，接唱出这首歌曲片段的
+                      <span className="font-black text-[#fff55f]">下半部分</span>
+                      即可。
+                    </li>
+                    <li>
+                      2.每位玩家有
+                      <span className="font-black text-[#fff55f]">2点生命值</span>
+                      ，抢到演唱机会但接唱失败会扣掉1点生命值。
+                    </li>
+                    <li>
+                      3.
+                      <span className="font-black text-[#fff55f]">生命值为0</span>
+                      将不能再参与剩余回合的抢唱，本局轮次结束后重制。
+                    </li>
+                  </ol>
+                </section>
+
+                <section>
+                  <h3 className="mb-3 font-display text-[0.98rem] font-black leading-none text-white">2、爆灯规则</h3>
+                  <p>
+                    1.玩家接唱时，其他玩家可为ta
+                    <span className="whitespace-nowrap font-black text-[#fff55f]">爆灯</span>
+                    。
+                  </p>
+                </section>
+              </div>
+
+              <button
+                onClick={() => setGameplayCardOpen(false)}
+                className="absolute -bottom-11 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border-[2.5px] border-white/92 bg-[#351a52]/94 text-white shadow-[0_0_18px_rgba(255,255,255,0.18)] transition-transform active:scale-95"
+                aria-label="关闭玩法卡片"
+              >
+                <X className="h-7 w-7 stroke-[2.8]" />
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="relative z-20 h-full w-full">
         <section className="absolute left-1/2 top-[18%] w-[86%] -translate-x-1/2">

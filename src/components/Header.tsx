@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
-import { Gem, Plus } from 'lucide-react';
+import { Gem, Plus, Settings } from 'lucide-react';
 import { UserProfile } from '../types';
+import { useState } from 'react';
 
 interface HeaderProps {
   user: UserProfile;
@@ -9,6 +10,13 @@ interface HeaderProps {
 }
 
 export default function Header({ user, onOpenProfile, onOpenShop }: HeaderProps) {
+  const [settingsHintOpen, setSettingsHintOpen] = useState(false);
+
+  const handleOpenSettings = () => {
+    setSettingsHintOpen(true);
+    window.setTimeout(() => setSettingsHintOpen(false), 1400);
+  };
+
   return (
     <motion.header 
       id="starmaker-header"
@@ -57,7 +65,7 @@ export default function Header({ user, onOpenProfile, onOpenShop }: HeaderProps)
       </div>
 
       {/* Currency Section */}
-      <div className="flex shrink-0 items-center gap-1.5">
+      <div className="flex shrink-0 items-center gap-3">
         {/* Diamonds container */}
         <motion.div 
           whileTap={{ scale: 0.96 }}
@@ -74,7 +82,21 @@ export default function Header({ user, onOpenProfile, onOpenShop }: HeaderProps)
             <Plus className="w-2.5 h-2.5 text-purple-300" />
           </div>
         </motion.div>
+        <motion.button
+          type="button"
+          whileTap={{ scale: 0.94 }}
+          onClick={handleOpenSettings}
+          className="flex h-8 w-8 items-center justify-center text-white drop-shadow-[0_0_8px_rgba(168,85,247,0.55)] transition-colors hover:text-purple-200"
+          aria-label="设置"
+        >
+          <Settings className="h-5.5 w-5.5 stroke-[2.6]" />
+        </motion.button>
       </div>
+      {settingsHintOpen && (
+        <div className="pointer-events-none absolute right-4 top-[5.15rem] rounded-full border border-white/10 bg-black/58 px-3 py-1.5 text-[11px] font-black text-white shadow-[0_0_16px_rgba(168,85,247,0.22)] backdrop-blur-md">
+          设置
+        </div>
+      )}
     </motion.header>
   );
 }

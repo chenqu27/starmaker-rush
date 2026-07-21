@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ChevronLeft, ChevronRight, Crown, Disc3, Gem, Heart, Music, Music2, Plus, Star, Trophy } from 'lucide-react';
+import { AudioWaveform, ChevronLeft, ChevronRight, Disc3, Gem, IdCard, Plus, Sparkles, Trophy } from 'lucide-react';
 import { sampleRecordings, sampleRooms } from '../data';
 import { UserProfile } from '../types';
 import avatar20 from '../assets/avatars/avatar_20.jpg';
@@ -51,12 +51,6 @@ export default function MeTab({ user, onOpenShop }: MeTabProps) {
   }, [user.avatarUrl, user.name]);
 
   const selectedRecord = gameRecords.find((record) => record.id === selectedRecordId);
-
-  const identityStats = [
-    { category: 'Pop', percent: 100, tone: 'from-purple-400 via-fuchsia-400 to-pink-400', iconTone: 'border-fuchsia-300/30 bg-fuchsia-400/12 text-fuchsia-200', icon: Star },
-    { category: 'Love Songs', percent: 72, tone: 'from-pink-400 to-rose-300', iconTone: 'border-pink-300/28 bg-pink-400/10 text-pink-200', icon: Heart },
-    { category: 'Dance', percent: 54, tone: 'from-cyan-300 to-blue-400', iconTone: 'border-cyan-300/28 bg-cyan-400/10 text-cyan-200', icon: Music2 }
-  ];
 
   return (
     <div id="me-tab-container" className="relative flex h-full flex-1 flex-col overflow-y-auto bg-[#050514] p-4 pb-24 text-white scrollbar-none select-none">
@@ -165,59 +159,48 @@ export default function MeTab({ user, onOpenShop }: MeTabProps) {
           ))}
         </section>
       ) : (
-        <section className="mt-4">
-          <div className="relative overflow-hidden rounded-[1.75rem] bg-[radial-gradient(circle_at_16%_18%,rgba(236,72,153,0.26),transparent_28%),radial-gradient(circle_at_84%_12%,rgba(168,85,247,0.22),transparent_30%),linear-gradient(145deg,rgba(25,14,55,0.94),rgba(76,29,104,0.5)_54%,rgba(10,16,42,0.9))] p-4 shadow-[0_0_34px_rgba(168,85,247,0.22),inset_0_0_28px_rgba(236,72,153,0.06)]">
-            <div className="absolute -left-10 top-8 h-28 w-28 rounded-full bg-purple-500/16 blur-2xl" />
-            <div className="absolute -right-10 -top-8 h-32 w-32 rounded-full bg-fuchsia-500/18 blur-2xl" />
-
-            <div className="relative flex items-center gap-4">
-              <div className="relative flex h-[4.6rem] w-[4.6rem] shrink-0 items-center justify-center rounded-[1.35rem] bg-gradient-to-br from-[#0b0820] via-[#21133d] to-fuchsia-500/70 shadow-[inset_-10px_-12px_18px_rgba(0,0,0,0.34),0_0_26px_rgba(236,72,153,0.34)]">
-                <Disc3 className="h-11 w-11 text-white/92 drop-shadow" />
-                <Music className="absolute bottom-3 right-3 h-4 w-4 text-cyan-200 drop-shadow" />
-                <Star className="absolute right-2 top-2 h-3.5 w-3.5 fill-amber-200 text-amber-200" />
+        <section className="mt-4 flex flex-col gap-2.5">
+          <div className="relative overflow-hidden rounded-[1.25rem] border border-fuchsia-400/34 bg-[linear-gradient(100deg,rgba(87,23,103,0.58),rgba(16,16,46,0.74)_50%,rgba(8,10,31,0.84))] px-3.5 py-4 shadow-[0_0_22px_rgba(216,70,239,0.18),inset_0_0_20px_rgba(216,70,239,0.07)]">
+            <div className="absolute left-0 top-0 h-full w-[42%] bg-[radial-gradient(circle_at_28%_50%,rgba(216,70,239,0.26),transparent_64%)]" />
+            <div className="relative flex items-center gap-3.5">
+              <div className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-fuchsia-400/52 bg-fuchsia-400/8 shadow-[0_0_18px_rgba(216,70,239,0.18)]">
+                <IdCard className="h-8 w-8 text-fuchsia-200" />
+                <Sparkles className="absolute right-3 top-3 h-3 w-3 fill-white text-white" />
               </div>
-              <div className="min-w-0 flex-1">
-                <h3 className="font-display text-2xl font-black leading-none tracking-wide text-white drop-shadow">
-                  POP ACE
-                </h3>
-                <div className="mt-3 flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1 rounded-full border border-fuchsia-300/24 bg-black/24 px-2.5 py-1 text-[10px] font-black tracking-wider text-amber-200 shadow-[0_0_14px_rgba(236,72,153,0.1)]">
-                    <Star className="h-3 w-3 fill-current" />
-                    42 GRABS
-                  </span>
-                  <span className="inline-flex items-center gap-1 rounded-full border border-cyan-300/22 bg-cyan-300/12 px-2.5 py-1 text-[10px] font-black tracking-wider text-cyan-200 shadow-[0_0_14px_rgba(34,211,238,0.1)]">
-                    <Crown className="h-3 w-3 fill-current" />
-                    TOP 12%
-                  </span>
-                </div>
+              <div className="min-w-0">
+                <p className="text-xs font-black text-fuchsia-300">音乐身份卡</p>
+                <h3 className="mt-1.5 font-display text-[1.28rem] font-black leading-tight text-white">深夜情歌选手</h3>
               </div>
             </div>
+          </div>
 
-            <div className="relative my-4 h-px bg-gradient-to-r from-transparent via-fuchsia-200/14 to-transparent" />
+          <div className="relative overflow-hidden rounded-[1.25rem] border border-blue-500/36 bg-[linear-gradient(105deg,rgba(10,45,101,0.58),rgba(8,13,41,0.86)_48%,rgba(8,10,31,0.9))] px-3.5 py-4 shadow-[0_0_20px_rgba(59,130,246,0.14),inset_0_0_18px_rgba(59,130,246,0.07)]">
+            <div className="absolute left-3 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-blue-400/12 blur-xl" />
+            <div className="relative flex items-center gap-3.5">
+              <div className="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-blue-300/22 bg-[#0b1638] shadow-[0_0_16px_rgba(59,130,246,0.18)]">
+                <div className="absolute h-12 w-12 rounded-full bg-[radial-gradient(circle_at_50%_50%,#050514_0_13%,#2b4e9b_14%_18%,#060818_19%_35%,#203d7a_36%_42%,#050514_43%_100%)] shadow-[inset_0_0_10px_rgba(255,255,255,0.08)]" />
+                <Disc3 className="relative h-9 w-9 text-blue-200/88" />
+                <div className="absolute right-2 top-3 h-7 w-1 rotate-[34deg] rounded-full bg-blue-100/70 shadow-[0_0_8px_rgba(191,219,254,0.28)]" />
+                <div className="absolute right-3 top-8 h-2 w-2 rounded-full bg-blue-100/80" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-black text-blue-300">本命歌曲</p>
+                <h3 className="mt-1.5 truncate font-display text-[1.28rem] font-black leading-tight text-white">Perfect</h3>
+                <p className="mt-0.5 text-sm font-semibold text-white/48">Ed Sheeran</p>
+              </div>
+            </div>
+          </div>
 
-            <div className="relative flex flex-col">
-            {identityStats.map((item, index) => (
-              <div key={item.category}>
-              <div
-                className={`flex items-center gap-3 py-2.5 ${index === 0 ? 'opacity-100' : index === 1 ? 'opacity-88' : 'opacity-76'}`}
-              >
-                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border shadow-[0_0_18px_rgba(236,72,153,0.08)] ${item.iconTone}`}>
-                  <item.icon className={`${item.category === 'Love Songs' ? 'fill-current' : ''} h-4.5 w-4.5`} />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <span className={`${index === 0 ? 'text-sm text-white' : 'text-xs text-gray-300'} font-black`}>
-                    {item.category}
-                  </span>
-                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-purple-950/55">
-                    <div className={`h-full rounded-full bg-gradient-to-r ${item.tone}`} style={{ width: `${item.percent}%` }} />
-                  </div>
-                </div>
+          <div className="relative overflow-hidden rounded-[1.25rem] border border-cyan-400/30 bg-[linear-gradient(105deg,rgba(13,88,91,0.42),rgba(7,18,35,0.88)_46%,rgba(7,12,30,0.92))] px-3.5 py-4 shadow-[0_0_20px_rgba(34,211,238,0.12),inset_0_0_18px_rgba(34,211,238,0.06)]">
+            <div className="absolute left-0 top-0 h-full w-[42%] bg-[radial-gradient(circle_at_28%_50%,rgba(34,211,238,0.18),transparent_68%)]" />
+            <div className="relative flex items-center gap-3.5">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-cyan-400/42 bg-cyan-400/7 text-cyan-300 shadow-[0_0_16px_rgba(34,211,238,0.1)]">
+                <AudioWaveform className="h-9 w-9" />
               </div>
-              {index < identityStats.length - 1 && (
-                <div className="ml-12 h-px bg-fuchsia-200/[0.055]" />
-              )}
+              <div className="min-w-0">
+                <p className="text-xs font-black text-cyan-300">声音名片</p>
+                <h3 className="mt-1.5 font-display text-[1.28rem] font-black leading-tight text-white">暖绒声线</h3>
               </div>
-            ))}
             </div>
           </div>
         </section>

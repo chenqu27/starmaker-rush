@@ -17,6 +17,12 @@ const fallbackMatchPlayers: Player[] = [
   { name: 'Leo', avatarUrl: avatar08 }
 ];
 
+const MATCHING_TIME_SCALE = 1.5;
+const IDENTITY_TIME_SCALE = 2;
+const MATCHING_TO_IDENTITY_MS = 1900 * MATCHING_TIME_SCALE;
+const IDENTITY_DISPLAY_MS = 1500 * IDENTITY_TIME_SCALE;
+const MATCHING_TO_ROOM_MS = MATCHING_TO_IDENTITY_MS + IDENTITY_DISPLAY_MS;
+
 interface QuickStartModalProps {
   key?: number;
   room: Room;
@@ -84,17 +90,17 @@ export default function QuickStartModal({ room, user, demoCommand, demoPaused = 
           next[slot] = next[slot] ?? matchingPool[slot - 1];
           return next;
         });
-      }, 320 + slot * 260)
+      }, (320 + slot * 260) * MATCHING_TIME_SCALE)
     ));
 
     const timer4 = setTimeout(() => {
       // Show round identity before entering the room.
       setMatchState((current) => current === 'matching' ? 'identity' : current);
-    }, 1900);
+    }, MATCHING_TO_IDENTITY_MS);
 
     const timer5 = setTimeout(() => {
       setMatchState((current) => current === 'active' ? current : 'active');
-    }, 3400);
+    }, MATCHING_TO_ROOM_MS);
 
     return () => {
       matchTimers.forEach(clearTimeout);
@@ -259,9 +265,10 @@ export default function QuickStartModal({ room, user, demoCommand, demoPaused = 
             {matchState === 'identity' && (
               <motion.div
                 key="round-identity"
-                initial={{ opacity: 0, y: 18, scale: 0.94 }}
+                initial={{ opacity: 0, y: 34, scale: 0.88 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -12, scale: 0.98 }}
+                transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
                 className="absolute inset-x-0 top-[12%] z-30 flex flex-col items-center px-8 text-center"
               >
                 <p className="rounded-full border border-fuchsia-300/18 bg-black/24 px-4 py-2 text-[0.72rem] font-black tracking-wide text-fuchsia-100 shadow-[0_0_22px_rgba(236,72,153,0.2)] backdrop-blur-md">
@@ -271,7 +278,7 @@ export default function QuickStartModal({ room, user, demoCommand, demoPaused = 
                 <motion.div
                   initial={{ y: 8 }}
                   animate={{ y: [0, -7, 0] }}
-                  transition={{ repeat: Infinity, duration: 1.1, ease: 'easeInOut' }}
+                  transition={{ repeat: Infinity, duration: 1.1 * IDENTITY_TIME_SCALE, ease: 'easeInOut' }}
                   className="relative mt-5 h-[24rem] w-[15.5rem]"
                 >
                   <div className="absolute left-1/2 top-0 h-[7.3rem] w-[7.3rem] -translate-x-1/2 rounded-full border-[3px] border-white/16 bg-gradient-to-br from-amber-100 via-pink-100 to-fuchsia-200 shadow-[0_0_30px_rgba(251,191,36,0.28)]">
