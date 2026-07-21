@@ -5,6 +5,7 @@ import {
   AlertTriangle,
   Gem,
   Gift,
+  HelpCircle,
   Heart,
   Keyboard,
   Menu,
@@ -64,12 +65,12 @@ const fallbackPlayers: Player[] = [
 ];
 
 const seatPositions = [
-  'left-[4%] top-[42.5%]',
-  'right-[4%] top-[42.5%]',
-  'left-[4%] top-[53%]',
-  'right-[4%] top-[53%]',
-  'left-[4%] top-[63.5%]',
-  'right-[4%] top-[63.5%]'
+  'left-[3%] bottom-[6.45rem]',
+  'left-[19%] bottom-[6.45rem]',
+  'left-[35%] bottom-[6.45rem]',
+  'left-[51%] bottom-[6.45rem]',
+  'left-[67%] bottom-[6.45rem]',
+  'left-[83%] bottom-[6.45rem]'
 ];
 
 const BUZZ_LOCK_SECONDS = 3;
@@ -221,6 +222,7 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
   const [playerStats, setPlayerStats] = useState<Record<string, PlayerStat>>({});
   const [frozenLyricLines, setFrozenLyricLines] = useState<string[] | null>(null);
   const [toast, setToast] = useState('');
+  const [micGrabNotice, setMicGrabNotice] = useState('');
   const [successCardVisible, setSuccessCardVisible] = useState(false);
   const [grabResultPending, setGrabResultPending] = useState(false);
   const [lampEffectVisible, setLampEffectVisible] = useState(false);
@@ -465,6 +467,13 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
   }, [toast, demoPaused]);
 
   useEffect(() => {
+    if (!micGrabNotice || demoPaused) return undefined;
+
+    const timer = window.setTimeout(() => setMicGrabNotice(''), SUCCESS_CARD_MS);
+    return () => window.clearTimeout(timer);
+  }, [micGrabNotice, demoPaused]);
+
+  useEffect(() => {
     if (!successCardVisible || demoPaused) return undefined;
 
     const timer = window.setTimeout(() => {
@@ -508,6 +517,19 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
     const timer = window.setTimeout(() => {
       setLastSuccess(true);
       setPhase('result');
+      setScore((prev) => prev + 88);
+      if (resultWinner) {
+        setPlayerStats((prev) => {
+          const current = prev[resultWinner.name] ?? { buzzes: 1, successes: 0 };
+          return {
+            ...prev,
+            [resultWinner.name]: {
+              buzzes: Math.max(1, current.buzzes),
+              successes: current.successes + 1
+            }
+          };
+        });
+      }
       setChats((items) => [...items.slice(-3), { sender: 'System', text: `${resultWinner?.name ?? '其他玩家'} 抢唱成功` }]);
     }, OPPONENT_SUBMIT_DELAY_MS);
 
@@ -644,19 +666,21 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
         setPhase('singing');
         setLastSuccess(true);
         setGrabWinner('other');
-        setSingerStage('hidden');
+        setSingerStage('enter');
         setFrozenLyricLines(lyricLines.slice(0, 3));
         setLyricWindowKey((prev) => prev + 1);
-        setSuccessCardVisible(true);
-        setScore(88);
+        setLyricProgress(1);
+        setSuccessCardVisible(false);
+        setGrabResultPending(false);
+        setMicGrabNotice(`${opponent.name} 抢到麦克风`);
         setPlayerStats((prev) => ({
           ...prev,
           [opponent.name]: {
             buzzes: (prev[opponent.name]?.buzzes ?? 0) + 1,
-            successes: (prev[opponent.name]?.successes ?? 0) + 1
+            successes: prev[opponent.name]?.successes ?? 0
           }
         }));
-        setChats([{ sender: 'System', text: `Demo: ${opponent.name} grabbed the mic.` }]);
+        setChats([{ sender: 'System', text: `${opponent.name} 抢到麦克风` }]);
         break;
       case 'round-ended':
         setDemoHold(false);
@@ -902,14 +926,8 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -6, scale: 0.96 }}
                 transition={{ duration: 0.16 }}
-                className="absolute left-0 top-9 z-[90] w-28 overflow-hidden rounded-xl border border-white/12 bg-black/70 py-1.5 text-xs font-black text-white shadow-[0_12px_30px_rgba(0,0,0,0.34)] backdrop-blur-md"
+                className="absolute left-0 top-9 z-[90] w-24 overflow-hidden rounded-xl border border-white/12 bg-black/70 py-1.5 text-xs font-black text-white shadow-[0_12px_30px_rgba(0,0,0,0.34)] backdrop-blur-md"
               >
-                <button
-                  onClick={handleGameplayInfo}
-                  className="block w-full px-3 py-2 text-left transition-colors hover:bg-white/10"
-                >
-                  游戏玩法
-                </button>
                 <button
                   onClick={handleExitRoom}
                   className="block w-full px-3 py-2 text-left text-rose-100 transition-colors hover:bg-white/10"
@@ -921,8 +939,8 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
           </AnimatePresence>
         </div>
 
-        <div className="pt-1 text-center">
-          <h1 className="font-display text-[0.92rem] font-extrabold leading-none tracking-normal">Room 5187024</h1>
+        <div className="min-w-0 max-w-[12.5rem] pt-1 text-center">
+          <h1 className="truncate font-display text-[0.92rem] font-extrabold leading-none tracking-normal">{room.title}</h1>
           <div className="mt-1.5 flex items-center justify-center gap-2 text-[0.74rem] font-semibold text-white/85">
             <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.9)]" />
             <span className="rounded-full bg-white/10 px-2 py-0.5 text-[0.62rem] uppercase text-white/70">
@@ -932,11 +950,11 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
         </div>
 
         <button
-          onClick={() => showToast('6 players online')}
+          onClick={handleGameplayInfo}
           className="flex h-7 w-7 items-center justify-center rounded-lg text-white/95 transition-colors hover:bg-white/10"
-          aria-label="Room users"
+          aria-label="游戏玩法"
         >
-          <Users className="h-5 w-5 stroke-[2.8]" />
+          <HelpCircle className="h-5 w-5 stroke-[2.8]" />
         </button>
       </header>
       )}
@@ -1084,15 +1102,13 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="relative h-[9.55rem] rounded-[1.8rem] border-[2px] border-fuchsia-300/95 bg-[#080033]/76 px-5 py-6 text-center shadow-[0_0_18px_rgba(246,75,255,0.9),inset_0_0_28px_rgba(28,12,98,0.92)] backdrop-blur-sm"
+                className="relative flex h-[9.55rem] flex-col items-center justify-center rounded-[1.8rem] border-[2px] border-fuchsia-300/95 bg-[#080033]/76 px-5 py-6 text-center shadow-[0_0_18px_rgba(246,75,255,0.9),inset_0_0_28px_rgba(28,12,98,0.92)] backdrop-blur-sm"
               >
-                <div className="mx-auto mb-3 w-fit rounded-full border border-cyan-300/20 bg-white/8 px-3 py-1 text-[0.62rem] font-black uppercase tracking-[0.16em] text-cyan-100">
+                <div className="mx-auto w-fit rounded-full border border-cyan-300/20 bg-white/8 px-4 py-1.5 text-[0.94rem] font-black uppercase leading-none tracking-[0.16em] text-cyan-100">
                   {room.title}
                 </div>
-                <p className="font-display text-[0.86rem] font-extrabold text-white">{song.title}</p>
-                <p className="mt-1 text-[0.68rem] font-semibold text-white/55">{song.artist}</p>
-                <div className="mt-4 flex items-center justify-center gap-2">
-                  <span className="text-[0.68rem] font-bold uppercase text-white/55">
+                <div className="mt-5 flex h-4 items-center justify-center gap-2">
+                  <span className="text-xs font-bold uppercase leading-none text-white/55">
                     {youReady ? '等待开始游戏' : 'Auto ready in'}
                   </span>
                   <motion.span
@@ -1254,6 +1270,19 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
         </AnimatePresence>
 
         <AnimatePresence>
+          {micGrabNotice && (
+            <motion.div
+              initial={{ opacity: 0, y: 12, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.96 }}
+              className="pointer-events-none absolute left-1/2 top-[57%] z-[55] -translate-x-1/2 rounded-full border border-cyan-200/28 bg-black/58 px-4 py-2 text-[0.78rem] font-black text-white shadow-[0_0_22px_rgba(34,211,238,0.24)] backdrop-blur-md"
+            >
+              {micGrabNotice}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
           {phase === 'missed' && (
             <motion.div
               initial={{ opacity: 0, y: 18, scale: 0.92 }}
@@ -1385,7 +1414,7 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
             whileTap={{ scale: 0.94 }}
             onClick={buzzAction}
             disabled={buzzLocked}
-            className={`absolute bottom-[4.65rem] right-4 z-30 flex h-[5.65rem] w-[5.65rem] items-center justify-center rounded-full p-[0.36rem] text-white shadow-[0_0_0_7px_rgba(254,73,255,0.18),0_0_28px_rgba(255,76,220,0.95)] transition-transform ${buzzLocked ? 'cursor-default' : ''}`}
+            className={`absolute bottom-[12.6rem] right-4 z-30 flex h-[5.65rem] w-[5.65rem] items-center justify-center rounded-full p-[0.36rem] text-white shadow-[0_0_0_7px_rgba(254,73,255,0.18),0_0_28px_rgba(255,76,220,0.95)] transition-transform ${buzzLocked ? 'cursor-default' : ''}`}
             aria-label={buzzLabel}
           >
             {(showLyricProgress || phase === 'ready') && (
@@ -1852,9 +1881,6 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
                   <Trophy className="h-7 w-7 text-white" />
                 </div>
                 <h2 className="mt-3 font-display text-xl font-black text-white">Game Results</h2>
-                <p className="mt-1 text-[0.72rem] font-semibold text-white/50">
-                  Total score {score} · Round {round}/{TOTAL_ROUNDS}
-                </p>
               </div>
 
               <div className="relative z-10 mt-5 flex min-h-0 flex-1 flex-col gap-2 overflow-hidden">
