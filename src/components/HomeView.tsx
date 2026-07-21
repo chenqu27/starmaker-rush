@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Home, MessageSquare, RadioTower, User, Zap } from 'lucide-react';
 import { Room, RushDemoCommand, RushRoomPhase, UserProfile } from '../types';
@@ -36,6 +36,7 @@ export const HomeView = ({ initialProfile = initialUserProfile, rushDemoCommand,
   const [quickStartSessionKey, setQuickStartSessionKey] = useState(0);
   const [activeQuickStartCommand, setActiveQuickStartCommand] = useState<RushDemoCommand | null>(null);
   const [activeRoomSession, setActiveRoomSession] = useState<ActiveRoomSession | null>(null);
+  const matchmakingOpenRef = useRef(matchmakingOpen);
 
   const handleOpenProfile = () => {
     setActiveTab('me');
@@ -48,11 +49,17 @@ export const HomeView = ({ initialProfile = initialUserProfile, rushDemoCommand,
   const activeRoom = rooms[activeCarouselIndex];
 
   useEffect(() => {
+    matchmakingOpenRef.current = matchmakingOpen;
+  }, [matchmakingOpen]);
+
+  useEffect(() => {
     if (!rushDemoCommand) return;
 
     setActiveRoomSession(null);
     setActiveQuickStartCommand(rushDemoCommand);
-    setQuickStartSessionKey((key) => key + 1);
+    if (!matchmakingOpenRef.current) {
+      setQuickStartSessionKey((key) => key + 1);
+    }
     setMatchmakingOpen(true);
   }, [rushDemoCommand]);
 

@@ -340,11 +340,11 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
   }, [phase, onPhaseChange]);
 
   useEffect(() => {
-    if (phase !== 'ready' || vacatedSeat !== null || !allPlayersReady) return;
+    if (phase !== 'ready' || !allPlayersReady) return;
 
     setReadyCountdown(0);
     setPhase('intro');
-  }, [allPlayersReady, phase, vacatedSeat]);
+  }, [allPlayersReady, phase]);
 
   useEffect(() => {
     if (phase !== 'intro' || demoHold || demoPaused) return undefined;
@@ -692,23 +692,26 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
         break;
       case 'user-left':
         if (phase !== 'ready') break;
+        const leavingPlayer = players.find((player) => player.name !== 'You');
         setVacatedSeat((prev) => {
-          const nextSeat = players.find((player) => player.name !== 'You')?.seat ?? 2;
+          const nextSeat = leavingPlayer?.seat ?? 2;
           return prev ?? nextSeat;
         });
         setReadyPlayerNames((prev) => {
           const next = new Set(prev);
-          players.filter((player) => player.name !== 'You').forEach((player) => next.delete(player.name));
+          if (leavingPlayer) {
+            next.delete(leavingPlayer.name);
+          }
           return next;
         });
-        setChats([{ sender: 'System', text: 'A player left. Waiting for rematch.' }]);
+        setChats([{ sender: 'System', text: `${leavingPlayer?.name ?? 'A player'} 离开了房间` }]);
         break;
       case 'users-ready':
         if (phase !== 'ready') break;
         setReadyPlayerNames((prev) => {
           const next = new Set(prev);
           displayedSeats.forEach((player) => {
-            if (player && player.name !== 'You') {
+            if (player) {
               next.add(player.name);
             }
           });
@@ -739,11 +742,6 @@ export default function SongRoom({ room, song, onClose, currentUserAvatar, demoC
   };
 
   const handleReady = () => {
-    if (vacatedSeat !== null) {
-      onRequestRematch?.();
-      return;
-    }
-
     const nextReadyPlayers = new Set(readyPlayerNames);
     nextReadyPlayers.add('You');
     setReadyPlayerNames(nextReadyPlayers);
